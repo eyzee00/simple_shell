@@ -10,29 +10,41 @@ int main()
 	int i = 1;
 	int char_count = 0;
 	char *word;
-	char ch[] = "ghjjh hgjhk huuguuh";
+	char ch[] = "       ghjjh      hgjhk        huuguuh      ";
 	char **wordlist;
 	char *del = " ";
 	int g = 0;
 	
 	n = word_count(ch);
 	wordlist = malloc(sizeof(char *) * n);
+	if (wordlist == NULL)
+		return (1);
 	word = strtok(ch, del);
 	char_count = strlen(word);
 	*wordlist = malloc(sizeof(char) * char_count + 1);
-	while (g < char_count)
+	if (*wordlist == NULL)
+	{
+		free(wordlist);
+		return (1);
+	}
+	while (word[g] != 0)
 	{
 		wordlist[0][g] = word[g];
 		g++;
 	}
 	wordlist[0][g] = 0;
-	while ( i < n)
+	while (i < n)
 	{
 		word = strtok(NULL, del);
 		char_count = strlen(word);
 		*(wordlist + i) = malloc(sizeof(char) * char_count + 1);
+		if (*(wordlist + i) == NULL)
+		{
+			free_memory(wordlist, i);
+			return (1);
+		}
 		g = 0;
-		while (g < char_count)
+		while (word[g] != 0)
 		{
 			wordlist[i][g] = word[g];
 			g++;
@@ -41,7 +53,6 @@ int main()
 		i++;
 	}
 	i = 0;
-
 	while (i < n)
 	{
 		printf("%s\n", *(wordlist + i));
