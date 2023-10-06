@@ -6,18 +6,18 @@
  */
 char **tokenizer(char *ch)
 {
-	int n = 0, i = 1, char_count = 0, g = 0;
+	int wordc = 0, i = 1, char_count = 0;
 	char *word;
-	char **wordlist, *del = " ";
+	char **wordlist, del[] = " ";
 
 	if (ch == NULL)
 		return (NULL);
-	n = word_count(ch);
-	wordlist = malloc(sizeof(char *) * n);
+	wordc = word_count(ch);
+	wordlist = malloc(sizeof(char *) * (wordc + 1));
 	if (wordlist == NULL)
 		return (NULL);
 	word = strtok(ch, del);
-	char_count = strlen(word);
+	char_count = _strlen(word);
 	*wordlist = malloc(sizeof(char) * char_count + 1);
 	if (*wordlist == NULL)
 	{
@@ -25,7 +25,7 @@ char **tokenizer(char *ch)
 		return (NULL);
 	}
 	fill_row(wordlist, 0, word);
-	while (i < n)
+	while (i < wordc)
 	{
 		word = strtok(NULL, del);
 		char_count = strlen(word);
@@ -38,21 +38,17 @@ char **tokenizer(char *ch)
 		fill_row(wordlist, i, word);
 		i++;
 	}
+	wordlist[i] = NULL;
 	return (wordlist);
 }
-
 int word_count(char *str)
 {
 	int i = 0, count = 0;
 	int check = 0;
 
-	if (str == 0)
-		return (-1);
-	if (*str == 0)
-		return (0);
-	while (str[i] != 0)
+	while (*(str + i) != 0)
 	{
-		while (str[i] != ' ' && str[i] != 0)
+		while (str[i] != ' ' && str[i] != 0 && str[i] != 10)
 		{
 			check = 1;
 			i++;
@@ -75,14 +71,30 @@ void free_memory(char **pointer, int n)
 	}
 	free(pointer);
 }
-
 void fill_row(char **wordlist, int row, char *word)
 {
-	int i;
+	int i = 0, j = 0;
 
-	for (i = 0; word[i] != 0; i++)
+	while (word[i] != 0)
 	{
-		wordlist[row][i] = word[i];
+		if (word[i] != 10 && word[i] != 32)
+		{
+			wordlist[row][j] = word[i];
+			j++;
+		}
+		i++;
 	}
-	wordlist[row][i] = '\0';
+	wordlist[row][j] = '\0';
+}
+int _strlen(char *buffer)
+{
+	int i = 0, del = 0;
+
+	while (buffer[i] != 0)
+	{
+		if (buffer[i] == 10 || buffer[i] == 32)
+			del++;
+		i++;
+	}
+	return (i - del);
 }
