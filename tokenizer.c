@@ -41,6 +41,11 @@ char **tokenizer(char *ch)
 	wordlist[i] = NULL;
 	return (wordlist);
 }
+/**
+  * word_count - count word in string removing spaces
+  * @str: string
+  * Return: count of str
+  */
 int word_count(char *str)
 {
 	int i = 0, count = 0;
@@ -60,6 +65,11 @@ int word_count(char *str)
 	}
 	return (count);
 }
+/**
+  * free_memory - free memory
+  * @pointer: point to memory to free
+  * @n: count of character
+  */
 void free_memory(char **pointer, int n)
 {
 	int i = 0;
@@ -71,6 +81,12 @@ void free_memory(char **pointer, int n)
 	}
 	free(pointer);
 }
+/**
+  * fill_row - fill worldlist pointer with words
+  * @wordlist: pointer
+  * @row: wordlist pointer row
+  * @word: content to fill
+  */
 void fill_row(char **wordlist, int row, char *word)
 {
 	int i = 0, j = 0;
@@ -86,6 +102,11 @@ void fill_row(char **wordlist, int row, char *word)
 	}
 	wordlist[row][j] = '\0';
 }
+/**
+  * _strlen - count string length
+  * @buffer: strings to count
+  * Return: string length
+  */
 int _strlen(char *buffer)
 {
 	int i = 0, del = 0;
