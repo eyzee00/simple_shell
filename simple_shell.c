@@ -9,11 +9,18 @@
 int main(int argc, char **argv)
 {
 	pid_t sub_id = 0;
-	char **command = NULL, *buffer = NULL;
+	char **command = NULL, *buffer = NULL, stdin_buffer[2000];
 	size_t buffsz = (size_t)LEN;
 	int readc = 0, wordc = 0, exec = 0, status;
-	int check;
+	int check, fd = 0;
+	
 
+	readc = read(fd,stdin_buffer, sizeof(stdin_buffer));
+
+	if (readc != -1)
+	{
+
+	}
 	if (argc != 1)
 		one_argc(status, sub_id, argv);
 	while (readc != -1)
@@ -117,3 +124,5 @@ void print_string(char *string, char *buffer)
 	i++;
 	print_string(string + i, buffer);
 }
+
+

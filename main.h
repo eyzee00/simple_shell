@@ -11,7 +11,7 @@
 #define LEN 256
 
 extern char **environ;
-
+int line_counter(char *str);
 int word_count(char *str);
 void free_memory(char **pointer, int n);
 char **tokenizer(char *ch);

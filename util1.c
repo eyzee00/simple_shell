@@ -29,3 +29,28 @@ void error_handler(char *argv, char *command)
 	print_string(command, buffer);
 	perror(buffer);
 }
+
+int line_count(char *str)
+{
+	int i = 0, counter = 0;
+
+	while (str[i] != '\0')
+	{
+		if (str[i] == 10)
+			counter++;
+	}
+	return (counter);
+}
+
+int stdin_handle(char *str)
+{
+	pid_t child_id;
+	char *line = 0;
+	char *buffer = 0;
+	char del = "\n", **wordlist;
+	int char_count;
+	
+	if(str == NULL)
+		return (NULL);
+}
+
