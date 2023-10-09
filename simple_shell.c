@@ -9,20 +9,19 @@
 int main(int argc, char **argv)
 {
 	pid_t sub_id = 0;
-	char **command = NULL, *buffer = NULL, stdin_buffer[2000];
+	char **command = NULL, *buffer = NULL, *stdin_buffer = NULL;
 	size_t buffsz = (size_t)LEN;
 	int readc = 0, wordc = 0, exec = 0, status;
 	int check, fd = 0;
-	
 
-	readc = read(fd,stdin_buffer, sizeof(stdin_buffer));
-
-	if (readc != -1)
+	if (!isatty(0))
 	{
-
+		stdin_handler(stdin, &status, argv[0]);
+		return (0);
 	}
 	if (argc != 1)
-		one_argc(status, sub_id, argv);
+		one_argc(&status, sub_id, argv);
+	readc = 0;
 	while (readc != -1)
 	{
 		printf("currentuser$: ");
@@ -50,7 +49,7 @@ int main(int argc, char **argv)
 				wait(&status);
 		}
 		else
-			error_handler(argv[0], command[0]);
+			error_handler(argv[0], command[0], 1);
 		free_memory(command, wordc);
 	}
 	free(buffer);
@@ -62,15 +61,14 @@ int main(int argc, char **argv)
   * @sub_id: id
   * @argv: arg vector
   */
-void one_argc(int status, pid_t sub_id, char **argv)
+void one_argc(int *status, pid_t sub_id, char **argv)
 {
 	sub_id = fork();
+
 	if (sub_id == 0)
-	{
 		execve(argv[1], argv + 1, environ);
-	}
 	else
-		wait(&status);
+		wait(status);
 }
 /**
   * file_exist - file exit & executable
@@ -83,11 +81,8 @@ int file_exist_exec(char *command)
 	{
 		if (access(command, X_OK) == 0)
 			return (1);
-		else
-			return (0);
 	}
-	else
-		return (-1);
+	return (-1);
 }
 /**
  * addto_buff - adds a character to the end of the given buffer
@@ -124,5 +119,3 @@ void print_string(char *string, char *buffer)
 	i++;
 	print_string(string + i, buffer);
 }
-
-

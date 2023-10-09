@@ -19,9 +19,13 @@ void fill_row(char **wordlist, int row, char *word);
 int _strlen(char *buffer);
 int __strlen(char *buffer);
 char *_memcpy(char *src, char *dest, unsigned int n);
-void one_argc(int status, pid_t sub_id, char **argv);
+void one_argc(int *status, pid_t sub_id, char **argv);
 int file_exist_exec(char *command);
 void print_string(char *string, char *buffer);
 void addto_buff(char *buffer, char c);
-void error_handler(char *argv, char *command);
+void error_handler(char *argv, char *command, int counter);
+void stdin_handler(FILE *file, int *status, char *argv);
+int str_cmp(char *s1, char *s2);
+void print_decimal(int n, char *buffer);
+
 #endif
