@@ -7,17 +7,20 @@
 int (*builtin_check(char *buffer))(char **env, char *buffer)
 {
 	builtin_t builtin_list[] = {
-		{"\n", newline_handler},
 		{"exit", exit_handler},
 		{"env", env_handler},
 		{NULL, NULL}
 	};
 	int i = 0;
 
-	while (i < 3)
+	if (space_check(buffer))
+		return (emptycmd_handler);
+	while (i < 2)
 	{
 		if (str_cmp(buffer, builtin_list[i].cmdname))
+		{
 			return (builtin_list[i].func);
+		}
 		i++;
 	}
 	return (NULL);
@@ -110,12 +113,12 @@ int env_handler(char **env, char *buffer)
 	return (1);
 }
 /**
- * newline_handler - handles the newline character
+ * emptycmd_handler - handles the newline character
  * @buffer: the buffer
  * @env: the environment
  * Return: (1)
  */
-int newline_handler(char **env, char *buffer)
+int emptycmd_handler(char **env, char *buffer)
 {
 	env = env;
 	buffer = buffer;

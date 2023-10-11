@@ -72,3 +72,16 @@ int word_count(char *str)
 	}
 	return (count);
 }
+/**
+ * _strlentok - calculates the length of the variable name
+ * @str: the string to mesure
+ * Return: the length of the string
+ */
+int _strlentok(char *str)
+{
+	int i = 0;
+
+	while (str[i] != 0 && str[i] != 61)
+		i++;
+	return (i);
+}

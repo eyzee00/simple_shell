@@ -79,9 +79,10 @@ void noninteractive_mode(FILE *file, int *status, char *argv)
 {
 	pid_t child_id;
 	char *line = 0;
-	char **command, special[] = "\n";
+	char **command;
 	size_t buffsz = (size_t) LEN;
 	int wordc, readc = 0, counter = 0, check;
+	int (*f)(char **env, char *buffer);
 
 	while (readc != -1)
 	{
@@ -89,8 +90,12 @@ void noninteractive_mode(FILE *file, int *status, char *argv)
 		if (readc == -1)
 			break;
 		counter++;
-		if (str_cmp(line, special))
-			continue;
+		f = builtin_check(line);
+		if (f != NULL)
+		{
+			if (f(environ, line))
+				continue;
+		}
 		wordc = word_count(line);
 		command = tokenizer(line);
 		check = file_exist_exec(command[0]);

@@ -73,3 +73,20 @@ void print_string(char *string, char *buffer)
 	i++;
 	print_string(string + i, buffer);
 }
+/**
+ * space_check - checks if the string contains only spaces
+ * @buffer: the string we're checking
+ * Return: (1) if the string is only spaces, (0) otherwise
+ */
+int space_check(char *buffer)
+{
+	int i = 0;
+
+	while (buffer[i] != 0)
+	{
+		if (buffer[i] != 32 && buffer[i] != 10)
+			return (0);
+		i++;
+	}
+	return (1);
+}

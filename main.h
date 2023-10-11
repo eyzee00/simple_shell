@@ -10,7 +10,7 @@
 #include <stddef.h>
 #include <errno.h>
 #include <sys/stat.h>
-#define LEN 256
+#define LEN 1256
 /*global variables*/
 extern char **environ;
 /**
@@ -29,6 +29,7 @@ int line_counter(char *str);
 int _strlen(char *buffer);
 int __strlen(char *buffer);
 int word_count(char *str);
+int _strlentok(char *str);
 
 /*general purpose functions*/
 void free_memory(char **pointer, int n);
@@ -42,6 +43,11 @@ void error_handler(char *argv, char *command, int counter, int option);
 int str_cmp(char *s1, char *s2);
 void print_decimal(int n, char *buffer);
 int _atoi(char *s);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char *_setenv(char *name, char *value);
+int equal_check(char *str);
+void set_entry(char *buffer, char *name, char *value);
+char *_strncpy(char *dest, char *src, int n);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);
@@ -52,6 +58,7 @@ void noninteractive_mode(FILE *file, int *status, char *argv);
 int (*builtin_check(char *buffer))(char **env, char *buffer);
 int exit_handler(char **env, char *buffer);
 int env_handler(char **env, char *buffer);
-int newline_handler(char **env, char *buffer);
+int emptycmd_handler(char **env, char *buffer);
+int space_check(char *buffer);
 
 #endif
