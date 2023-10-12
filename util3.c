@@ -26,10 +26,8 @@ void set_entry(char *buffer, char *name, char *value)
 
 char *_strncpy(char *dest, char *src, int n)
 {
-	int i, dest_len = (int)strlen(dest);
+	int i;
 
-	if (n > dest_len)
-		return (NULL);
 	for (i = 0; i < n; i++)
 	{
 		if (src[i] != '\0')
@@ -45,4 +43,36 @@ char *_strncpy(char *dest, char *src, int n)
 		}
 	}
 	return (dest);
+}
+/**
+ * free_env - frees environment memory
+ * @environ: the environment to free
+ * @n: the number of variables in the environment
+ * Return: (void)
+ */
+void free_env(char **environ, int n)
+{
+	int i = 0;
+
+	while (i < n)
+	{
+		free(environ[i]);
+		i++;
+	}
+	free(environ);
+}
+/**
+ * string_count - counts how many strings in the env list
+ * @env: environment array
+ * Return: the count
+ */
+int string_count(char **env)
+{
+	int i = 0;
+
+	if (env == NULL)
+		return (0);
+	while (*(env + i) != NULL)
+		i++;
+	return (i);
 }

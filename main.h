@@ -13,6 +13,7 @@
 #define LEN 1256
 /*global variables*/
 extern char **environ;
+static void *target;
 /**
  * struct builtin_s - defines a builtin element
  * @cmdname: builtin name
@@ -30,6 +31,7 @@ int _strlen(char *buffer);
 int __strlen(char *buffer);
 int word_count(char *str);
 int _strlentok(char *str);
+int string_count(char **env);
 
 /*general purpose functions*/
 void free_memory(char **pointer, int n);
@@ -48,6 +50,7 @@ char *_setenv(char *name, char *value);
 int equal_check(char *str);
 void set_entry(char *buffer, char *name, char *value);
 char *_strncpy(char *dest, char *src, int n);
+void free_env(char **environ, int n);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);

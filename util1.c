@@ -80,7 +80,9 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 		new_stuff = new_pointer;
 		for (i = 0; i < old_size; i++)
 			new_stuff[i] = old_stuff[i];
-		free(ptr);
+		if (target != NULL)
+			free(target);
+		target = new_pointer;
 	}
 	return (new_pointer);
 }
@@ -94,7 +96,8 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 char *_setenv(char *name, char *value)
 {
 	unsigned int i = 0, size = 0;
-	char **mod_env, *newvar, buff[256] = "\0";
+	char **mod_env, *newvar, buff[256];
+	char **ptr = environ;
 
 	if (name == 0 || *name == 0)
 		return (NULL);
@@ -102,7 +105,7 @@ char *_setenv(char *name, char *value)
 		return (NULL);
 	while (*(environ + i) != NULL)
 	{
-		_strncpy(buff, environ[i], _strlentok(environ[i]));
+		_strncpy(buff, ptr[i], _strlentok(ptr[i]));
 		if (str_cmp(buff, name))
 		{
 		size = (unsigned int) (__strlen(name) + __strlen(value) + 2);
@@ -111,12 +114,13 @@ char *_setenv(char *name, char *value)
 		if (newvar == NULL)
 			return (NULL);
 		set_entry(newvar, name, value);
-		*(environ + i) = newvar;
+		*(ptr + i) = newvar;
 		return (newvar);
 		}
 		i++;
 	}
-	mod_env = _realloc(environ, i * sizeof(char *), (i + 2) * sizeof(char *));
+	i = string_count(ptr);
+	mod_env = _realloc(ptr, i * sizeof(char *), (i + 2) * sizeof(char *));
 	if (mod_env == NULL)
 		return (NULL);
 	size = (unsigned int) (__strlen(name) + __strlen(value) + 2);
