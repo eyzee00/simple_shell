@@ -9,9 +9,10 @@ void interactive_mode(char *argv)
 	pid_t sub_id = 0;
 	char **command = NULL, *buffer = NULL;
 	size_t buffsz = (size_t)LEN;
+	alloclist_t *head = NULL;
 	int readc = 0, wordc = 0, status;
 	int check;
-	int (*f)(char **env, char *buffer);
+	int (*f)(char *buffer, alloclist_t **head);
 
 	while (readc != -1)
 	{
@@ -21,7 +22,7 @@ void interactive_mode(char *argv)
 			break;
 		f = builtin_check(buffer);
 		if (f != NULL)
-			if (f(environ, buffer))
+			if (f(buffer, &head))
 				continue;
 		wordc = word_count(buffer);
 		command = tokenizer(buffer);
@@ -38,6 +39,8 @@ void interactive_mode(char *argv)
 			error_handler(argv, command[0], 1, check);
 		free_memory(command, wordc);
 	}
+	if (head != NULL)
+		free_everything(&head);
 	free(buffer);
 }
 /**
@@ -81,8 +84,9 @@ void noninteractive_mode(FILE *file, int *status, char *argv)
 	char *line = 0;
 	char **command;
 	size_t buffsz = (size_t) LEN;
+	alloclist_t **head = NULL;
 	int wordc, readc = 0, counter = 0, check;
-	int (*f)(char **env, char *buffer);
+	int (*f)(char *buffer, alloclist_t **head);
 
 	while (readc != -1)
 	{
@@ -93,7 +97,7 @@ void noninteractive_mode(FILE *file, int *status, char *argv)
 		f = builtin_check(line);
 		if (f != NULL)
 		{
-			if (f(environ, line))
+			if (f(line, head))
 				continue;
 		}
 		wordc = word_count(line);

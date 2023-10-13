@@ -80,9 +80,6 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 		new_stuff = new_pointer;
 		for (i = 0; i < old_size; i++)
 			new_stuff[i] = old_stuff[i];
-		if (target != NULL)
-			free(target);
-		target = new_pointer;
 	}
 	return (new_pointer);
 }
@@ -91,18 +88,19 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
  * existing one
  * @name: name of the variable to set
  * @value: the value of the said variable
+ * @head: head of the alloc list
  * Return: (-1) on failure, (1) on success
  */
-char *_setenv(char *name, char *value)
+int _setenv(char *name, char *value, alloclist_t **head)
 {
 	unsigned int i = 0, size = 0;
 	char **mod_env, *newvar, buff[256];
 	char **ptr = environ;
 
 	if (name == 0 || *name == 0)
-		return (NULL);
+		return (-1);
 	if (equal_check(name))
-		return (NULL);
+		return (-1);
 	while (*(environ + i) != NULL)
 	{
 		_strncpy(buff, ptr[i], _strlentok(ptr[i]));
@@ -112,26 +110,29 @@ char *_setenv(char *name, char *value)
 		newvar = malloc(size);
 		*newvar = '\0';
 		if (newvar == NULL)
-			return (NULL);
+			return (0);
 		set_entry(newvar, name, value);
 		*(ptr + i) = newvar;
-		return (newvar);
+		add_node_end(head, (void *) newvar);
+		return (1);
 		}
 		i++;
 	}
 	i = string_count(ptr);
 	mod_env = _realloc(ptr, i * sizeof(char *), (i + 2) * sizeof(char *));
 	if (mod_env == NULL)
-		return (NULL);
+		return (0);
+	add_node_end(head, (void *) mod_env);
 	size = (unsigned int) (__strlen(name) + __strlen(value) + 2);
 	mod_env[i] = malloc(size * sizeof(char));
 	if (mod_env[i] == NULL)
-		return (NULL);
+		return (0);
 	mod_env[i][0] = '\0';
 	set_entry(mod_env[i], name, value);
 	mod_env[i + 1] = NULL;
 	environ = mod_env;
-	return (mod_env[i]);
+	add_node_end(head, (void *) mod_env[i]);
+	return (1);
 }
 /**
  * equal_check - checks for the equal character

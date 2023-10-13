@@ -1,12 +1,13 @@
 #include "main.h"
 /**
  * builtin_check - checks if the user have entered a supported builtin
- * @buffer: the user input
+ * @buffer: user's command
  * Return: the builtin function to execute if found
  */
-int (*builtin_check(char *buffer))(char **env, char *buffer)
+int (*builtin_check(char *buffer))(char *buffer, alloclist_t **head)
 {
 	builtin_t builtin_list[] = {
+		{"setenv", setenv_handler},
 		{"exit", exit_handler},
 		{"env", env_handler},
 		{NULL, NULL}
@@ -15,7 +16,7 @@ int (*builtin_check(char *buffer))(char **env, char *buffer)
 
 	if (space_check(buffer))
 		return (emptycmd_handler);
-	while (i < 2)
+	while (i < 3)
 	{
 		if (str_cmp(buffer, builtin_list[i].cmdname))
 		{
@@ -27,21 +28,22 @@ int (*builtin_check(char *buffer))(char **env, char *buffer)
 }
 /**
  * exit_handler - handles exit with arguments or without
- * @env: the current environment
+ * @head: head of the alloclist
  * @buffer: the user inpu
  * Return: (void)
  */
-int exit_handler(char **env, char *buffer)
+int exit_handler(char *buffer, alloclist_t **head)
 {
 	char **command;
 	int status = 0;
 
 	command = tokenizer(buffer);
-	env = env;
+	head = head;
 	if (command[1] == NULL)
 	{
 		free_memory(command, 1);
 		free(buffer);
+		free_everything(head);
 		exit(status);
 	}
 	else
@@ -49,6 +51,7 @@ int exit_handler(char **env, char *buffer)
 		status = (int) _atoi(command[1]);
 		free_memory(command, 2);
 		free(buffer);
+		free_everything(head);
 		exit(status);
 	}
 	return (0);
@@ -95,18 +98,19 @@ int _atoi(char *s)
 }
 /**
  * env_handler - handles printing the environment
- * @env: the current process's environment
  * @buffer: buffer
+ * @head: head of the allocation list
  * Return: (1)
  */
-int env_handler(char **env, char *buffer)
+int env_handler(char *buffer, alloclist_t **head)
 {
 	int i = 0;
 
+	head = head;
 	buffer = buffer;
-	while (*(env + i) != NULL)
+	while (*(environ + i) != NULL)
 	{
-		write(1, env[i], __strlen(env[i]));
+		write(1, environ[i], __strlen(environ[i]));
 		write(1, "\n", 1);
 		i++;
 	}
@@ -115,12 +119,12 @@ int env_handler(char **env, char *buffer)
 /**
  * emptycmd_handler - handles the newline character
  * @buffer: the buffer
- * @env: the environment
+ * @head: head of the allocation list
  * Return: (1)
  */
-int emptycmd_handler(char **env, char *buffer)
+int emptycmd_handler(char *buffer, alloclist_t **head)
 {
-	env = env;
+	head = head;
 	buffer = buffer;
 	return (1);
 }

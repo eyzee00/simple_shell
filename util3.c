@@ -76,3 +76,44 @@ int string_count(char **env)
 		i++;
 	return (i);
 }
+/**
+ * setenv_handler - handles the setenv builtin
+ * @buffer: the command and its arguments
+ * @head: head of the alloc list
+ * Return: (1);
+ */
+int setenv_handler(char *buffer, alloclist_t **head)
+{
+	char **command, err[128] = "\0";
+	int option, wordc;
+
+	wordc = word_count(buffer);
+	command = tokenizer(buffer);
+	if (command[1] == NULL || command[2] == NULL)
+	{
+		print_string(command[0], err);
+		print_string(": Usage: setenv VARNAME VALUE\n", err);
+		write(2, err, __strlen(err));
+		free_memory(command, wordc);
+		return (1);
+	}
+	option = _setenv(command[1], command[2], head);
+	if (option == 0)
+	{
+		print_string(command[0], err);
+		print_string(": Memory allocation failed\n", err);
+		write(2, err, __strlen(err));
+		free_memory(command, wordc);
+		return (1);
+	}
+	if (option == -1)
+	{
+		print_string(command[0], err);
+		print_string(": bad variable name\n", err);
+		write(2, err, __strlen(err));
+		free_memory(command, wordc);
+		return (1);
+	}
+	free_memory(command, wordc);
+	return (1);
+}
