@@ -68,6 +68,8 @@ void allocfreer(void);
 alloclist_t *alloclist_init(void);
 void free_everything(alloclist_t **head);
 alloclist_t *add_node_end(alloclist_t **head, void *address);
+int _unsetenv(char *name, alloclist_t **head);
+
 /*mode handler functions*/
 void interactive_mode(char *argv);
 void argument_mode(int *status, pid_t sub_id, char **argv);
@@ -79,5 +81,6 @@ int exit_handler(char *buffer, alloclist_t **head);
 int env_handler(char *buffer, alloclist_t **head);
 int emptycmd_handler(char *buffer, alloclist_t **head);
 int setenv_handler(char *buffer, alloclist_t **head);
+int unsetenv_handler(char *buffer, alloclist_t **head);
 
 #endif
