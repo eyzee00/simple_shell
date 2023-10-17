@@ -11,11 +11,6 @@ int main(int argc, char **argv)
 
 	if (argc != 1)
 	{
-		if (argc != 2)
-		{
-			arg_err(argv, -2, NULL, 0);
-			return (1);
-		}
 		argument_mode(argv);
 		return (0);
 	}
