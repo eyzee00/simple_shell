@@ -58,8 +58,10 @@ void argument_mode(char **argv)
 
 	check = access(argv[1], F_OK);
 	buffer = filetobuff(argv, &head);
-	if (buffer == NULL)
+	if (*buffer == 0)
 		return;
+	if (buffer == NULL)
+		perror("malloc");
 	linec = line_counter(buffer);
 	commandlist = commandtok(buffer, "\n");
 	while (i < linec)
@@ -78,7 +80,10 @@ void argument_mode(char **argv)
 		f = builtin_check(commandlist[i]);
 		if (f != NULL)
 			if (f(commandlist[i], &head))
+			{
+				i++;
 				continue;
+			}
 		command = tokenizer(commandlist[i]);
 		check = file_exist_exec(command[0]);
 		if (check == 1)
@@ -160,27 +165,25 @@ char *filetobuff(char **argv, alloclist_t **head)
 {
 	int fd, readc = 0;
 	char *buffer = "";
-	size_t buffer_size = 1024, readc_sum = 0;
+	size_t buffsize = 5000, readc_sum = 0;
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
 		arg_err(argv, 10, NULL, 0);
-		return (NULL);
+		return ("");
 	}
-	buffer = _calloc(buffer_size, sizeof(char));
+	buffer = _calloc(buffsize, sizeof(char));
 	if (buffer == NULL)
 	{
-		perror("malloc");
 		close(fd);
 		return (NULL);
 	}
 	while (readc != -1)
 	{
-		readc = read(fd, buffer + readc_sum, buffer_size - readc_sum);
+		readc = read(fd, buffer + readc_sum, buffsize - readc_sum);
 		if (readc == -1)
 		{
-			perror("read");
 			close(fd);
 			free(buffer);
 			return (NULL);
@@ -188,13 +191,13 @@ char *filetobuff(char **argv, alloclist_t **head)
 		if (readc == 0)
 			break;
 		readc_sum = readc_sum + (size_t) readc;
-		if (readc_sum == buffer_size)
+		if (readc_sum == buffsize)
 		{
-			buffer_size *= 2;
-			buffer = _realloc(buffer, buffer_size / 2, buffer_size);
+			buffsize = buffsize * 2;
+			buffer = _realloc(buffer, buffsize / 2, buffsize);
 			if (buffer == NULL)
 			{
-				perror("realloc");
+				free(buffer);
 				close(fd);
 				return (NULL);
 			}

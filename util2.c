@@ -1,4 +1,5 @@
 #include "main.h"
+#include <unistd.h>
 /**
  * print_decimal - adds an integer to the buffer
  * @n: the number to be printed
