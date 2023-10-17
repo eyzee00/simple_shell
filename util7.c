@@ -7,13 +7,12 @@
  */
 int str_cmp_df(char *s1, char *s2)
 {
-	int i = 0, j;
-
-	for (j = 0; s1[i] != 0 && s2[j] != 0; i++, j++)
-		if (s1[i] != s2[j])
-			return (0);
-	return (1);
-
+	while (*s1 != 0 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *) s1 - *(unsigned char *) s2);
 }
 /**
  * fill_string - fills a string

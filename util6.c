@@ -55,7 +55,7 @@ int executable_locator(path_t **head, char **command)
 		dir_entry = readdir(ptr);
 		while (dir_entry != NULL)
 		{
-			if (strcmp(dir_entry->d_name, command[0]) == 0)
+			if (str_cmp_df(dir_entry->d_name, command[0]) == 0)
 			{
 			check = 1;
 			break;
