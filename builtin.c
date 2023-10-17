@@ -34,17 +34,10 @@ int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
  */
 int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 {
-	char **command, err[256] = "";
+	char **command;
 	int status = 0;
 
 	command = tokenizer(buffer);
-	if (command[2] != NULL)
-	{
-		print_string(command[0], err);
-		print_string(": Usage: exit [status]\n", err);
-		write(2, err, __strlen(err));
-		return (1);
-	}
 	if (command[1] == NULL)
 	{
 		free_memory(command, 1);
@@ -55,7 +48,7 @@ int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 	}
 	else
 	{
-		status = (int) _atoi(command[1]);
+		status = _atoi(command[1]);
 		free_memory(command, 2);
 		free(buffer);
 		free_pathlist(path);

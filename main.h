@@ -89,6 +89,7 @@ void *_calloc(unsigned int nmemb, unsigned int size);
 int str_cmp_df(char *s1, char *s2);
 char *fill_string(char *dirname, char *command, char *newcommand);
 void executor(char **command);
+int alpha_check(char *str);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);

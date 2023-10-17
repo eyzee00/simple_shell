@@ -46,3 +46,23 @@ void executor(char **command)
 	else
 		wait(&status);
 }
+/**
+ * alpha_check - checks for alphabetical chars in a string
+ * @str: the string
+ * Return: (1) if alphabetical chars exist, (0) otherwise
+ */
+int alpha_check(char *str)
+{
+	int i = 0;
+
+	while (str[i] != 0)
+	{	
+		if (str[i] >= 97 && str[i] <= 122)
+			return (1);
+		if (str[i] >= 65 && str[i] <= 90)
+			return (1);
+		i++;
+	}
+	return (0);
+	
+}
