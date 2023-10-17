@@ -2,6 +2,7 @@
 #define _MAIN_H_
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
@@ -69,11 +70,16 @@ alloclist_t *alloclist_init(void);
 void free_everything(alloclist_t **head);
 alloclist_t *add_node_end(alloclist_t **head, void *address);
 int _unsetenv(char *name, alloclist_t **head);
+char **commandtok(char *ch, char *del);
+char *filetobuff(char **argv, alloclist_t **head);
+void arg_err(char **argv, int option, char **command, int line);
+void fill_row_def(char **wordlist, int row, char *word);
+void *_calloc(unsigned int nmemb, unsigned int size);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);
-void argument_mode(int *status, pid_t sub_id, char **argv);
-void noninteractive_mode(FILE *file, int *status, char *argv);
+void argument_mode(char **argv);
+void noninteractive_mode(FILE *file, int *status, char **argv);
 
 /*built-in handler functions*/
 int (*builtin_check(char *buffer))(char *buffer, alloclist_t **head);

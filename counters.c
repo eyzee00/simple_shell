@@ -25,8 +25,6 @@ int __strlen(char *buffer)
 {
 	int i = 0;
 
-	if (*buffer == 0)
-		return (0);
 	while (buffer[i] != 0)
 		i++;
 	return (i);
@@ -40,9 +38,9 @@ int line_counter(char *str)
 {
 	int i = 0, counter = 0;
 
-	while (str[i] != '\0')
+	while (*(str + i) != 0)
 	{
-		if (str[i] == 10)
+		if (*(str + i) == 10 && str[i - 1] != 10)
 			counter++;
 		i++;
 	}
@@ -60,7 +58,7 @@ int word_count(char *str)
 
 	while (*(str + i) != 0)
 	{
-		while (str[i] != ' ' && str[i] != 0 && str[i] != 10)
+		while (str[i] != 0 && str[i] != 32 && str[i] != 10)
 		{
 			check = 1;
 			i++;

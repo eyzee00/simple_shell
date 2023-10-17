@@ -7,17 +7,21 @@
  */
 int main(int argc, char **argv)
 {
-	pid_t sub_id = 0;
 	int status;
 
 	if (!isatty(0))
 	{
-		noninteractive_mode(stdin, &status, argv[0]);
+		noninteractive_mode(stdin, &status, argv);
 		return (0);
 	}
 	if (argc != 1)
 	{
-		argument_mode(&status, sub_id, argv);
+		if (argc != 2)
+		{
+			arg_err(argv, -2, NULL, 0);
+			return (1);
+		}
+		argument_mode(argv);
 		return (0);
 	}
 	interactive_mode(argv[0]);
