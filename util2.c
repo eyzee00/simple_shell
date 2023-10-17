@@ -30,8 +30,14 @@ void print_decimal(int n, char *buffer)
   */
 int file_exist_exec(char *command)
 {
-	if (access(command, F_OK) != -1)
+	struct stat status;
+	int check;
+
+	check = stat(command, &status);
+	if (check == 0)
 	{
+		if (S_ISDIR(status.st_mode))
+			return (-1);
 		if (access(command, X_OK) == 0)
 			return (1);
 		else
