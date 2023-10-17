@@ -1,10 +1,10 @@
 #include "main.h"
 /**
- * builtin_check - checks if the user have entered a supported builtin
- * @buffer: user's command
+ * bltn_chck - checks if the user have entered a supported builtin
+ * @buff: user's command
  * Return: the builtin function to execute if found
  */
-int (*builtin_check(char *buffer))(char *buffer, alloclist_t **head)
+int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
 {
 	builtin_t builtin_list[] = {
 		{"unsetenv", unsetenv_handler},
@@ -15,11 +15,11 @@ int (*builtin_check(char *buffer))(char *buffer, alloclist_t **head)
 	};
 	int i = 0;
 
-	if (space_check(buffer))
+	if (space_check(buff))
 		return (emptycmd_handler);
 	while (i < 4)
 	{
-		if (str_cmp(buffer, builtin_list[i].cmdname))
+		if (str_cmp(buff, builtin_list[i].cmdname))
 			return (builtin_list[i].func);
 		i++;
 	}
@@ -28,20 +28,21 @@ int (*builtin_check(char *buffer))(char *buffer, alloclist_t **head)
 /**
  * exit_handler - handles exit with arguments or without
  * @head: head of the alloclist
- * @buffer: the user inpu
+ * @buffer: the user input
+ * @path: the head of the pathlist
  * Return: (void)
  */
-int exit_handler(char *buffer, alloclist_t **head)
+int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 {
 	char **command;
 	int status = 0;
 
 	command = tokenizer(buffer);
-	head = head;
 	if (command[1] == NULL)
 	{
 		free_memory(command, 1);
 		free(buffer);
+		free_pathlist(path);
 		free_everything(head);
 		exit(status);
 	}
@@ -50,6 +51,7 @@ int exit_handler(char *buffer, alloclist_t **head)
 		status = (int) _atoi(command[1]);
 		free_memory(command, 2);
 		free(buffer);
+		free_pathlist(path);
 		free_everything(head);
 		exit(status);
 	}
@@ -99,14 +101,16 @@ int _atoi(char *s)
  * env_handler - handles printing the environment
  * @buffer: buffer
  * @head: head of the allocation list
+ * @path: the head of the pathlist
  * Return: (1)
  */
-int env_handler(char *buffer, alloclist_t **head)
+int env_handler(char *buffer, alloclist_t **head, path_t **path)
 {
 	int i = 0;
 
-	head = head;
-	buffer = buffer;
+	head = (alloclist_t **) head;
+	buffer = (char *) buffer;
+	path = (path_t **) path;
 	while (*(environ + i) != NULL)
 	{
 		write(1, environ[i], __strlen(environ[i]));
@@ -119,11 +123,13 @@ int env_handler(char *buffer, alloclist_t **head)
  * emptycmd_handler - handles the newline character
  * @buffer: the buffer
  * @head: head of the allocation list
+ * @path: the head of the pathlist
  * Return: (1)
  */
-int emptycmd_handler(char *buffer, alloclist_t **head)
+int emptycmd_handler(char *buffer, alloclist_t **head, path_t **path)
 {
-	head = head;
-	buffer = buffer;
+	head = (alloclist_t **) head;
+	buffer = (char *) buffer;
+	path = (path_t **) path;
 	return (1);
 }

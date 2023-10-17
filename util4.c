@@ -106,14 +106,16 @@ int _unsetenv(char *name, alloclist_t **head)
  * unsetenv_handler - handles the unset builtin
  * @buffer: the user command
  * @head: the head of the alloclist
+ * @path: the head of the pathlist
  * Return: always (1)
  */
-int unsetenv_handler(char *buffer, alloclist_t **head)
+int unsetenv_handler(char *buffer, alloclist_t **head, path_t **path)
 {
 	int option = 0, wordc = word_count(buffer);
 	char err[256] = "", **command;
 
 	command = tokenizer(buffer);
+	path = (path_t **) path;
 	if (wordc != 2)
 	{
 		print_string(command[0], err);

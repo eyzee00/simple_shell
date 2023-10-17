@@ -80,15 +80,17 @@ int string_count(char **env)
  * setenv_handler - handles the setenv builtin
  * @buffer: the command and its arguments
  * @head: head of the alloc list
+ * @path: head of the pathlist
  * Return: (1);
  */
-int setenv_handler(char *buffer, alloclist_t **head)
+int setenv_handler(char *buffer, alloclist_t **head, path_t **path)
 {
 	char **command, err[128] = "\0";
 	int option, wordc;
 
 	wordc = word_count(buffer);
 	command = tokenizer(buffer);
+	path = (path_t **) path;
 	if (command[1] == NULL || command[2] == NULL)
 	{
 		print_string(command[0], err);

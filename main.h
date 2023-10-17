@@ -11,6 +11,7 @@
 #include <stddef.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <dirent.h>
 #define LEN 1256
 /*global variables*/
 extern char **environ;
@@ -26,6 +27,16 @@ typedef struct alloclist_s
 	struct alloclist_s *next;
 } alloclist_t;
 /**
+ * struct path_s - defines a path directory
+ * @name: the name of the directory
+ * @next: a pointer to the next directory in the PATH
+ */
+typedef struct path_s
+{
+	char *name;
+	struct path_s *next;
+} path_t;
+/**
  * struct builtin_s - defines a builtin element
  * @cmdname: builtin name
  * @func: the assossiated function
@@ -33,7 +44,7 @@ typedef struct alloclist_s
 typedef struct builtin_s
 {
 	char *cmdname;
-	int (*func)(char *buffer, alloclist_t **head);
+	int (*func)(char *buffer, alloclist_t **head, path_t **path);
 } builtin_t;
 /*functions*/
 alloclist_t *alloclist_init(void);
@@ -75,6 +86,9 @@ char *filetobuff(char **argv, alloclist_t **head);
 void arg_err(char **argv, int option, char **command, int line);
 void fill_row_def(char **wordlist, int row, char *word);
 void *_calloc(unsigned int nmemb, unsigned int size);
+int str_cmp_df(char *s1, char *s2);
+char *fill_string(char *dirname, char *command, char *newcommand);
+void executor(char **command);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);
@@ -82,11 +96,17 @@ void argument_mode(char **argv);
 void noninteractive_mode(FILE *file, int *status, char **argv);
 
 /*built-in handler functions*/
-int (*builtin_check(char *buffer))(char *buffer, alloclist_t **head);
-int exit_handler(char *buffer, alloclist_t **head);
-int env_handler(char *buffer, alloclist_t **head);
-int emptycmd_handler(char *buffer, alloclist_t **head);
-int setenv_handler(char *buffer, alloclist_t **head);
-int unsetenv_handler(char *buffer, alloclist_t **head);
+int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path);
+int exit_handler(char *buffer, alloclist_t **head, path_t **path);
+int env_handler(char *buffer, alloclist_t **head, path_t **path);
+int emptycmd_handler(char *buffer, alloclist_t **head, path_t **path);
+int setenv_handler(char *buffer, alloclist_t **head, path_t **path);
+int unsetenv_handler(char *buffer, alloclist_t **head, path_t **path);
+/*PATH handler functions*/
+char *_getenv(const char *name);
+path_t *add_node_end_path(path_t **head, char *dirname);
+void free_pathlist(path_t **head);
+int executable_locator(path_t **head, char **command);
+path_t *path_creator(path_t **head);
 
 #endif

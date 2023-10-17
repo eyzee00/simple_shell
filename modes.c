@@ -7,41 +7,45 @@
  */
 void interactive_mode(char *argv)
 {
-	pid_t sub_id = 0;
 	char **command = NULL, *buffer = NULL;
 	size_t buffsz = (size_t)LEN;
 	alloclist_t *head = NULL;
-	int readc = 0, wordc = 0, status;
-	int check;
-	int (*f)(char *buffer, alloclist_t **head);
+	path_t *path = NULL;
+	int readc = 0, wordc = 0, check, check2;
+	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
+	path = path_creator(&path);
 	while (readc != -1)
 	{
 		printf("($): ");
 		readc = getline(&buffer, &buffsz, stdin);
 		if (readc == -1)
 			break;
-		f = builtin_check(buffer);
+		f = bltn_chck(buffer);
 		if (f != NULL)
-			if (f(buffer, &head) == 1)
+			if (f(buffer, &head, &path) == 1)
 				continue;
 		wordc = word_count(buffer);
 		command = tokenizer(buffer);
 		check = file_exist_exec(command[0]);
-		if (check == 1)
+		if (check == 1 || check == -1)
 		{
-			sub_id = fork();
-			if (sub_id == 0)
-				execve(command[0], command, environ);
-			else
-				wait(&status);
+			if (check == -1)
+			{
+				check2 = executable_locator(&path, command);
+				if (check2 == -1 || check2 == 0)
+				{
+					error_handler(argv, command[0], 1, check);
+					free_memory(command, wordc);
+					continue;
+				}
+			}
+			executor(command);
 		}
-		else
-			error_handler(argv, command[0], 1, check);
 		free_memory(command, wordc);
 	}
-	if (head != NULL)
-		free_everything(&head);
+	free_pathlist(&path);
+	free_everything(&head);
 	free(buffer);
 }
 /**
@@ -51,11 +55,13 @@ void interactive_mode(char *argv)
   */
 void argument_mode(char **argv)
 {
-	int check, exec, sub_id, status, linec, i = 0, wordc;
+	int check, check2, exec, sub_id, status, linec, i = 0, wordc;
 	char *buffer = NULL, **commandlist = NULL, **command = NULL;
 	alloclist_t *head = NULL;
-	int (*f)(char *buffer, alloclist_t **head);
+	path_t *path = NULL;
+	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
+	path = path_creator(&path);
 	check = access(argv[1], F_OK);
 	buffer = filetobuff(argv, &head);
 	if (*buffer == 0)
@@ -77,36 +83,44 @@ void argument_mode(char **argv)
 			continue;
 		}
 		wordc = word_count(commandlist[i]);
-		f = builtin_check(commandlist[i]);
+		f = bltn_chck(commandlist[i]);
 		if (f != NULL)
-			if (f(commandlist[i], &head))
+			if (f(commandlist[i], &head, &path))
 			{
 				i++;
 				continue;
 			}
 		command = tokenizer(commandlist[i]);
 		check = file_exist_exec(command[0]);
-		if (check == 1)
+		if (check == 1 || check == -1)
 		{
-		sub_id = fork();
-		if (sub_id == 0)
-		{
-
-			exec = execve(command[0], command, environ);
-			if (exec == -1)
+			if (check == -1)
 			{
-				exit(99);
+				check2 = executable_locator(&path, command);
+				if (check2 == -1 || check2 == 0)
+				{
+					error_handler(argv[0], command[0], 1, check);
+					free_memory(command, wordc);
+					i++;
+					continue;
+				}
 			}
+			sub_id = fork();
+			if (sub_id == 0)
+			{
+				exec = execve(command[0], command, environ);
+				if (exec == -1)
+					exit(99);
+			}
+			else
+				wait(&status);
 		}
-		else
-			wait(&status);
-		}
-		else
-			arg_err(argv, check, command, i);
 		free_memory(command, wordc);
 		i++;
 	}
-	free_everything(&head);
+	free_pathlist(&path);
+	if (head != NULL)
+		free_everything(&head);
 	free_memory(commandlist, linec);
 }
 /**
@@ -122,37 +136,50 @@ void noninteractive_mode(FILE *file, int *status, char **argv)
 	char *line = 0;
 	char **command;
 	size_t buffsz = (size_t) LEN;
-	alloclist_t **head = NULL;
-	int wordc, readc = 0, counter = 0, check;
-	int (*f)(char *buffer, alloclist_t **head);
+	alloclist_t *head = NULL;
+	path_t *path = NULL;
+	int wordc, readc = 0, counter = 0, check, check2;
+	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
+	path = path_creator(&path);
 	while (readc != -1)
 	{
 		readc = getline(&line, &buffsz, file);
 		if (readc == -1)
 			break;
 		counter++;
-		f = builtin_check(line);
+		f = bltn_chck(line);
 		if (f != NULL)
 		{
-			if (f(line, head))
+			if (f(line, &head, &path))
 				continue;
 		}
 		wordc = word_count(line);
 		command = tokenizer(line);
 		check = file_exist_exec(command[0]);
-		if (check == 1)
+		if (check == 1 || check == -1)
 		{
+			if (check == -1)
+			{
+				check2 = executable_locator(&path, command);
+				if (check2 == -1 || check2 == 0)
+				{
+					arg_err(argv, -5, command, counter);
+					free_memory(command, wordc);
+					continue;
+				}
+			}
 			child_id = fork();
 			if (child_id == 0)
 				execve(command[0], command, environ);
 			else
 				wait(status);
 		}
-		else
-			arg_err(argv, -5, command, counter);
 		free_memory(command, wordc);
 	}
+	free_pathlist(&path);
+	if (head != NULL)
+		free_everything(&head);
 	free(line);
 }
 /**

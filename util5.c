@@ -138,3 +138,25 @@ void *_calloc(unsigned int nmemb, unsigned int size)
 		*(set_to_zero + i) = 0;
 	return (pointer);
 }
+/**
+ * _getenv - gets the value of an environment variable
+ * @name: the variable name
+ * Return: (NULL) if not found, the value otherwise
+ */
+char *_getenv(const char *name)
+{
+	int i = 0, j = 0;
+
+	while (environ[i] != NULL)
+	{
+		if (str_cmp((char *) name, environ[i]))
+		{
+		while (environ[i][j] != '=')
+			j++;
+		j++;
+		return (environ[i] + j);
+		}
+		i++;
+	}
+	return (NULL);
+}
