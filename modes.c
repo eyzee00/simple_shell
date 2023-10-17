@@ -59,7 +59,6 @@ void argument_mode(char **argv)
 	char *buffer = NULL, **commandlist = NULL, **command = NULL;
 	alloclist_t *head = NULL;
 	path_t *path = NULL;
-	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
 	path = path_creator(&path);
 	check = access(argv[1], F_OK);
@@ -83,13 +82,6 @@ void argument_mode(char **argv)
 			continue;
 		}
 		wordc = word_count(commandlist[i]);
-		f = bltn_chck(commandlist[i]);
-		if (f != NULL)
-			if (f(commandlist[i], &head, &path))
-			{
-				i++;
-				continue;
-			}
 		command = tokenizer(commandlist[i]);
 		check = file_exist_exec(command[0]);
 		if (check == 1 || check == -1)
