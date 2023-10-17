@@ -9,11 +9,6 @@ int main(int argc, char **argv)
 {
 	int status;
 
-	if (!isatty(0))
-	{
-		noninteractive_mode(stdin, &status, argv);
-		return (0);
-	}
 	if (argc != 1)
 	{
 		if (argc != 2)
@@ -22,6 +17,11 @@ int main(int argc, char **argv)
 			return (1);
 		}
 		argument_mode(argv);
+		return (0);
+	}
+	if (!isatty(0))
+	{
+		noninteractive_mode(stdin, &status, argv);
 		return (0);
 	}
 	interactive_mode(argv[0]);
