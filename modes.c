@@ -47,6 +47,7 @@ void interactive_mode(char *argv)
 }
 /**
   * argument_mode - helper function
+  * using variadic
   * @argv: arg vector
   * Return: void
   */
