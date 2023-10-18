@@ -34,8 +34,8 @@ int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
  */
 int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 {
-	char **command;
-	int status = 0;
+	char **command, *err;
+	int status = 0, check = 0;
 
 	command = tokenizer(buffer);
 	if (command[1] == NULL)
@@ -48,14 +48,24 @@ int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 	}
 	else
 	{
+		check = alpha_check(command[1]);
+		if (check)
+		{
+			err = _getenv("_");
+			exit_arg_err(err, command);
+			free_memory(command, 2);
+		}
+		else
+		{
 		status = _atoi(command[1]);
 		free_memory(command, 2);
 		free(buffer);
 		free_pathlist(path);
 		free_everything(head);
 		exit(status);
+		}
 	}
-	return (0);
+	return (1);
 }
 /**
  * _atoi - converts a string to integer

@@ -1,32 +1,39 @@
 #include "main.h"
 #include <unistd.h>
+
+static path_t *ptr1;
+static alloclist_t *ptr2;
+static char *buff;
 /**
  * interactive_mode - provides the user with a prompt and executes commands
  * @argv: the name of the shell program
  * Return: (void)
  */
+
 void interactive_mode(char *argv)
 {
 	char **command = NULL, *buffer = NULL;
-	size_t buffsz = (size_t)LEN;
 	alloclist_t *head = NULL;
 	path_t *path = NULL;
-	int readc = 0, wordc = 0, check, check2;
+	int readc = 0, wordc = 0, check, check2, buffsz = LEN;
 	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
 	path = path_creator(&path);
+	ptr1 = path;
+	signal(SIGINT, sigint_handler);
 	while (readc != -1)
 	{
-		printf("($): ");
-		readc = getline(&buffer, &buffsz, stdin);
+		ptr2 = head;
+		write(1, "($): ", 6);
+		readc = getline(&buffer, (size_t *) &buffsz, stdin);
+		buff = buffer;
 		if (readc == -1)
 			break;
 		f = bltn_chck(buffer);
 		if (f != NULL)
 			if (f(buffer, &head, &path) == 1)
 				continue;
-		wordc = word_count(buffer);
-		command = tokenizer(buffer);
+		var_set(buffer, &wordc, &command);
 		check = file_exist_exec(command[0]);
 		if (check == 1 || check == -1)
 		{
@@ -44,9 +51,7 @@ void interactive_mode(char *argv)
 		}
 		free_memory(command, wordc);
 	}
-	free_pathlist(&path);
-	free_everything(&head);
-	free(buffer);
+	ultimate_free(&path, &head, buffer);
 }
 /**
   * argument_mode - helper function
@@ -225,4 +230,16 @@ char *filetobuff(char **argv, alloclist_t **head)
 	close(fd);
 	add_node_end(head, buffer);
 	return (buffer);
+}
+/**
+ * sigint_handler - handles the sigint signal
+ * @sig: the signal
+ * Return: (void)
+ */
+void sigint_handler(int sig)
+{
+	free_pathlist(&ptr1);
+	free_everything(&ptr2);
+	free(buff);
+	exit(sig);
 }

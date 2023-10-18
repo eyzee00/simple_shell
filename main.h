@@ -90,6 +90,10 @@ int str_cmp_df(char *s1, char *s2);
 char *fill_string(char *dirname, char *command, char *newcommand);
 void executor(char **command);
 int alpha_check(char *str);
+void sigint_handler(int sig);
+void ultimate_free(path_t **path, alloclist_t **head, char *buffer);
+void exit_arg_err(char *argv, char **command);
+void var_set(char *buffer, int *check, char ***command);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);

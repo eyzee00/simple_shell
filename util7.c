@@ -56,7 +56,7 @@ int alpha_check(char *str)
 	int i = 0;
 
 	while (str[i] != 0)
-	{	
+	{
 		if (str[i] >= 97 && str[i] <= 122)
 			return (1);
 		if (str[i] >= 65 && str[i] <= 90)
@@ -64,5 +64,17 @@ int alpha_check(char *str)
 		i++;
 	}
 	return (0);
-	
+}
+/**
+ * ultimate_free - frees literally everything
+ * @path: the pathlist
+ * @head: the alloclist
+ * @buffer: the getline buffer
+ * Return: (void);
+ */
+void ultimate_free(path_t **path, alloclist_t **head, char *buffer)
+{
+	free_pathlist(path);
+	free_everything(head);
+	free(buffer);
 }
