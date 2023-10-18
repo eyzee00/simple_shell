@@ -3,6 +3,7 @@
  * exit_arg_err - handles the exit argument error
  * @argv: the name of the shell
  * @command: the exit command
+ * @option: the error code
  * Return: (void)
  */
 void exit_arg_err(char *argv, char **command, int option)

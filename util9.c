@@ -121,16 +121,16 @@ void multicmd_hand(char *buffer, char *argv, path_t **path)
  */
 char *_strtok(char *str, char *delimiter)
 {
-	static char *buffiter = NULL;
+	static char *buffiter;
 	char *buffstart;
 	int i = 0;
 
 	if (str != NULL)
 		buffiter = str;
 	if (buffiter == NULL || *buffiter == '\0')
-		return NULL;
+		return (NULL);
 	while (*(buffiter + i) != 0 && *(buffiter + i) == *delimiter)
-        	i++;
+		i++;
 	buffiter = buffiter + i;
 	i = 0;
 	buffstart = buffiter;
