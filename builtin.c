@@ -35,19 +35,10 @@ int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
 int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 {
 	char **command, *err;
-	int status = 0, check = 0, i = 0, wordc;
+	int status = 0, check = 0, wordc;
 
 	wordc = word_count(buffer);
 	command = tokenizer(buffer);
-	while (command[i] != NULL)
-		i++;
-	if (i != 1 && i != 2)
-	{
-		err = _getenv("_");
-		exit_arg_err(err, command, 1);
-		free_memory(command, wordc);
-		return (1);
-	}
 	if (command[1] == NULL)
 	{
 		free_memory(command, wordc);
