@@ -29,6 +29,7 @@ typedef struct alloclist_s
 } alloclist_t;
 /**
  * struct path_s - defines a path directory
+ * path object
  * @name: the name of the directory
  * @next: a pointer to the next directory in the PATH
  */
