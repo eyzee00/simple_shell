@@ -120,7 +120,7 @@ void multicmd_hand(char *buffer, char *argv, path_t **p, alloclist_t **head)
 	free_memory(commandlist, cmdc);
 }
 /**
- * _strtok - custom strtok to make Julian satisfied
+ * _strtok - custom strtok
  * @str: the buffer to tokenize
  * @delimiter: a pointer to the delimiter
  * Return: the next token
