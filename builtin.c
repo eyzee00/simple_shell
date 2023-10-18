@@ -1,7 +1,7 @@
 #include "main.h"
 /**
  * bltn_chck - checks for supported builtin
- * @buff: user's command
+ * @buff: user's command entry
  * Return: the builtin function to execute if found
  */
 int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
@@ -32,7 +32,7 @@ int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
  * @head: head of the alloclist
  * @buffer: the user input
  * @path: the head of the pathlist
- * Return: (void)
+ * Return: return (void)
  */
 int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 {
@@ -133,7 +133,7 @@ int env_handler(char *buffer, alloclist_t **head, path_t **path)
  * emptycmd_handler - handles the newline character
  * @buffer: the buffer
  * @head: head of the allocation list
- * @path: the head of the pathlist
+ * @path: head of the pathlist
  * Return: (1)
  */
 int emptycmd_handler(char *buffer, alloclist_t **head, path_t **path)
