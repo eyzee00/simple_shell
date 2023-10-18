@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * bltn_chck - checks if the user have entered a supported builtin
+ * bltn_chck - checks for supported builtin
  * @buff: user's command
  * Return: the builtin function to execute if found
  */
