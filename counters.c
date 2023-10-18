@@ -51,6 +51,7 @@ int line_counter(char *str)
 }
 /**
   * word_count - count word in string removing spaces
+  * counts words by rm space, command and newline
   * @str: string
   * Return: count of str
   */
