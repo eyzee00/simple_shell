@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * cd_handler - handles changing a directory
+ * cd_handler - changes directory
  * @buffer: the user commmand
  * @head: head of the alloclist
  * @path: head of the pathlist
@@ -70,7 +70,7 @@ void cd_err(char **command, char *argv, int wordc)
 	free_memory(command, wordc);
 }
 /**
- * replacer - a placeholder function
+ * replacer - functions for place holder
  * @head: head of the alloclist
  * @buff3: buffer
  * @command: user command
