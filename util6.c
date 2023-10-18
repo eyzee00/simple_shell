@@ -2,6 +2,7 @@
 #include <dirent.h>
 /**
  * add_node_end_path - adds a node to the pathlist
+ * add to linkedlist
  * @head: the address of the head pointer
  * @dirname: the name of the directory to add
  * Return: the address of the new element
