@@ -4,7 +4,7 @@ static path_t *ptr1;
 static alloclist_t *ptr2;
 static char *buff;
 /**
- * interactive_mode - provides the user with a prompt and executes commands
+ * interactive_mode - allows prompt and executes commands
  * @argv: the name of the shell program
  * Return: (void)
  */
