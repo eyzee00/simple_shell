@@ -68,6 +68,7 @@ void argument_mode(char **argv)
 		perror("malloc");
 	linec = line_counter(buffer);
 	commandlist = commandtok(buffer, "\n");
+	signal(SIGINT, sigint_handler);
 	while (i < linec)
 	{
 		if (commandlist[i] == NULL)
@@ -117,6 +118,7 @@ void noninteractive_mode(FILE *file, char **argv)
 	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
 	path = path_creator(&path);
+	signal(SIGINT, sigint_handler);
 	while (readc != -1)
 	{
 		readc = getline(&line, &buffsz, file);
