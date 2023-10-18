@@ -19,6 +19,7 @@ int _strlen(char *buffer)
 }
 /**
  * __strlen - classic strlen
+ * classics differents
  * @buffer: the buffer to operate on
  * Return: the length of buffer
  */
