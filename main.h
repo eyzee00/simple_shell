@@ -93,7 +93,7 @@ void executor(char **command);
 int alpha_check(char *str);
 void sigint_handler(int sig);
 void ultimate_free(path_t **path, alloclist_t **head, char *buffer);
-void exit_arg_err(char *argv, char **command);
+void exit_arg_err(char *argv, char **command, int option);
 void var_set(char *buffer, int *check, char ***command);
 int exec_handl(int check, char **cmd, char *argv, path_t **p, int wdc, int c);
 int semicolon_check(char *str);

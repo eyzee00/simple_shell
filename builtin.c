@@ -35,33 +35,40 @@ int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
 int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 {
 	char **command, *err;
-	int status = 0, check = 0;
+	int status = 0, check = 0, i = 0, wordc;
 
+	wordc = word_count(buffer);
 	command = tokenizer(buffer);
+	while (command[i] != NULL)
+		i++;
+	if (i != 1 && i != 2)
+	{
+		err = _getenv("_");
+		exit_arg_err(err, command, 1);
+		free_memory(command, wordc);
+		return (1);
+	}
 	if (command[1] == NULL)
 	{
-		free_memory(command, 1);
-		free(buffer);
-		free_pathlist(path);
-		free_everything(head);
+		free_memory(command, wordc);
+		ultimate_free(path, head, buffer);
 		exit(status);
 	}
 	else
 	{
+
 		check = alpha_check(command[1]);
 		if (check)
 		{
 			err = _getenv("_");
-			exit_arg_err(err, command);
-			free_memory(command, 2);
+			exit_arg_err(err, command, 0);
+			free_memory(command, wordc);
 		}
 		else
 		{
 		status = _atoi(command[1]);
-		free_memory(command, 2);
-		free(buffer);
-		free_pathlist(path);
-		free_everything(head);
+		free_memory(command, wordc);
+		ultimate_free(path, head, buffer);
 		exit(status);
 		}
 	}

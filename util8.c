@@ -5,17 +5,28 @@
  * @command: the exit command
  * Return: (void)
  */
-void exit_arg_err(char *argv, char **command)
+void exit_arg_err(char *argv, char **command, int option)
 {
 	char err[256] = "";
 
-	print_string(argv, err);
-	print_string(": 1: ", err);
-	print_string(command[0], err);
-	print_string(": Illegal number: ", err);
-	print_string(command[1], err);
-	print_string("\n", err);
-	write(2, err, __strlen(err));
+	if (option == 0)
+	{
+		print_string(argv, err);
+		print_string(": 1: ", err);
+		print_string(command[0], err);
+		print_string(": Illegal number: ", err);
+		print_string(command[1], err);
+		print_string("\n", err);
+		write(2, err, __strlen(err));
+	}
+	if (option == 1)
+	{
+		print_string(argv, err);
+		print_string(": 1: ", err);
+		print_string(command[0], err);
+		print_string(": usage: exit [status]\n", err);
+		write(2, err, __strlen(err));
+	}
 }
 /**
  * var_set - sets some variables
