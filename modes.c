@@ -202,6 +202,7 @@ char *filetobuff(char **argv, alloclist_t **head)
 }
 /**
  * sigint_handler - handles the sigint signal
+ * sign ints handler
  * @signum: the signal
  * Return: (void)
  */
