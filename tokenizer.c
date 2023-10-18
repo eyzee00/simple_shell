@@ -59,7 +59,8 @@ void free_memory(char **pointer, int n)
 	free(pointer);
 }
 /**
-  * fill_row - fill worldlist pointer with words
+  * fill_row - fill worldlist pointer
+  * put words in each rows
   * @wordlist: pointer
   * @row: wordlist pointer row
   * @word: content to fill
