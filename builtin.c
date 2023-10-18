@@ -43,7 +43,7 @@ int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 	{
 		free_memory(command, wordc);
 		ultimate_free(path, head, buffer);
-		exit(status);
+		exit(1);
 	}
 	else
 	{

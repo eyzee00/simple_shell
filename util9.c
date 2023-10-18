@@ -125,9 +125,9 @@ char *_strtok(char *str, char *delimiter)
 	char *buffstart;
 	int i = 0;
 
-	if (str != NULL)
+	if (str != 0)
 		buffiter = str;
-	if (buffiter == NULL || *buffiter == '\0')
+	if (buffiter == 0 || *buffiter == 0)
 		return (NULL);
 	while (*(buffiter + i) != 0 && *(buffiter + i) == *delimiter)
 		i++;
@@ -140,7 +140,7 @@ char *_strtok(char *str, char *delimiter)
 	i = 0;
 	if (*buffiter == *delimiter)
 	{
-		*buffiter = '\0';
+		*buffiter = 0;
 		i++;
 		buffiter = buffiter + i;
 	}
