@@ -1,8 +1,8 @@
 #include "main.h"
 /**
- * cmd_counter - countes the number of commands
- * @str: the string to operate on
- * Return: the line count
+ * cmd_counter - count the number of commands
+ * @str: the string to operate with
+ * Return: the line count if successful
  */
 int cmd_counter(char *str)
 {
@@ -19,7 +19,7 @@ int cmd_counter(char *str)
 /**
  * cmdtok - tokenizes the user's input
  * @ch: strings
- * Return: pointer to commandlist
+ * Return: pointer to commandlist at success
  */
 char **cmdtok(char *ch)
 {
