@@ -7,12 +7,17 @@
  */
 int str_cmp_df(char *s1, char *s2)
 {
+	int difference = 0;
+
+	if (s1 == NULL && s2 == NULL)
+		return (difference);
 	while (*s1 != 0 && *s1 == *s2)
 	{
 		s1++;
 		s2++;
 	}
-	return (*(unsigned char *) s1 - *(unsigned char *) s2);
+	difference = *(unsigned char *) s1 - *(unsigned char *) s2;
+	return (difference);
 }
 /**
  * fill_string - fills a string
@@ -38,11 +43,18 @@ char *fill_string(char *dirname, char *command, char *newcommand)
 void executor(char **command)
 {
 	pid_t child_id;
-	int status = 0;
+	int status = 0, exec;
 
 	child_id = fork();
 	if (child_id == 0)
-		execve(command[0], command, environ);
+	{
+		exec = execve(command[0], command, environ);
+		if (exec == -1)
+		{
+			perror("execve");
+			exit(99);
+		}
+	}
 	else
 		wait(&status);
 }

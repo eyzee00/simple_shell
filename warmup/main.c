@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 char *_getenv(const char *name);
 extern char **environ;
 int str_cmp(char *s1, char *s2);
@@ -9,10 +10,15 @@ int str_cmp(char *s1, char *s2);
 /********************************/
 int main(void)
 {
-	char *buffer, name[] = "PATH";
-
-	buffer = _getenv((const char *) name);
-
+	char buff[] = "ls -la ; ls -la ; ls -la\n";
+	char *ptr;
+	
+	ptr = strtok(buff, ";");
+	printf("%s| %d\n", ptr, (unsigned int) strlen(ptr));
+	ptr = strtok(NULL, ";");
+	printf("%s| %d\n", ptr, (unsigned int) strlen(ptr));
+	ptr = strtok(NULL, ";");
+	printf("%s| %d", ptr, (unsigned int) strlen(ptr));
 	return (0);
 }
 /*********************************/

@@ -15,7 +15,7 @@ void interactive_mode(char *argv)
 	char **command = NULL, *buffer = NULL;
 	alloclist_t *head = NULL;
 	path_t *path = NULL;
-	int readc = 0, wordc = 0, check, check2, buffsz = LEN;
+	int readc = 0, wordc = 0, check, buffsz = LEN;
 	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
 	path = path_creator(&path);
@@ -33,24 +33,18 @@ void interactive_mode(char *argv)
 		if (f != NULL)
 			if (f(buffer, &head, &path) == 1)
 				continue;
+		if (semicolon_check(buffer))
+			multicmd_hand(buffer, argv, &path);
+		else
+		{
 		var_set(buffer, &wordc, &command);
 		check = file_exist_exec(command[0]);
-		if (check == 1 || check == -1)
-		{
-			if (check == -1)
-			{
-				check2 = executable_locator(&path, command);
-				if (check2 == -1 || check2 == 0)
-				{
-					error_handler(argv, command[0], 1, check);
-					free_memory(command, wordc);
-					continue;
-				}
-			}
-			executor(command);
-		}
+		if (exec_handl(check, command, argv, &path, wordc))
+			continue;
 		free_memory(command, wordc);
+		}
 	}
+	write(1, "\n", 2);
 	ultimate_free(&path, &head, buffer);
 }
 /**

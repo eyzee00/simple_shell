@@ -56,6 +56,7 @@ int __strlen(char *buffer);
 int word_count(char *str);
 int _strlentok(char *str);
 int string_count(char **env);
+int cmd_counter(char *str);
 
 /*general purpose functions*/
 void free_memory(char **pointer, int n);
@@ -94,6 +95,11 @@ void sigint_handler(int sig);
 void ultimate_free(path_t **path, alloclist_t **head, char *buffer);
 void exit_arg_err(char *argv, char **command);
 void var_set(char *buffer, int *check, char ***command);
+int exec_handl(int check, char **cmd, char *argv, path_t **p, int wordc);
+int semicolon_check(char *str);
+char **cmdtok(char *ch);
+void fill_row_cmd(char **wordlist, int row, char *word);
+void multicmd_hand(char *buffer, char *argv, path_t **path);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);
