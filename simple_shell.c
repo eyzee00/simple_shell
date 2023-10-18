@@ -1,8 +1,8 @@
 #include "main.h"
 /**
  * main - entry point of our shell
- * @argc: argumen count
- * @argv: argument vector
+ * @argc: number of argument
+ * @argv: our arguement vector
  * Return: (0) on success
  */
 int main(int argc, char **argv)
