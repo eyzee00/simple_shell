@@ -1,6 +1,7 @@
 #include "main.h"
 /**
  * commandtok - tokenize our argument
+ * split user command in an array
  * @ch: strings
  * @del: delimiter
  * Return: pointer to wordlist
