@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * error_handler - handles errors
+ * error_handler - handles errors print statement
  * @argv: the name of the shell program
  * @command: the name of the command
  * @counter: line count
@@ -25,7 +25,7 @@ void error_handler(char *argv, char *command, int counter, int option)
 		perror(buffer);
 }
 /**
- * str_cmp - compares two strings
+ * str_cmp - two strings compared
  * @s1: the first string
  * @s2: the second string
  * Return: (1) if identical, (0) otherwise
