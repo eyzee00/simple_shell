@@ -20,7 +20,7 @@ int cd_handler(char *buffer, alloclist_t **head, path_t **path)
 		check = chdir(buff1);
 		if (check == -1)
 		{
-			perror("chdir");
+			cd_err(command, _getenv("_"));
 			free_memory(command, wordc);
 			return (1);
 		}
@@ -35,7 +35,7 @@ int cd_handler(char *buffer, alloclist_t **head, path_t **path)
 		check = chdir(command[1]);
 		if (check == -1)
 		{
-			perror("chdir");
+			cd_err(command, _getenv("_"));
 			free_memory(command, wordc);
 			return (1);
 		}
@@ -45,4 +45,23 @@ int cd_handler(char *buffer, alloclist_t **head, path_t **path)
 		free_memory(command, wordc);
 		return (1);
 	}
+	return (1);
+}
+/**
+ * cd_err - handles cd errors
+ * @command: user command
+ * @argv: name of the shell
+ * Return: (void)
+ */
+void cd_err(char **command, char *argv)
+{
+	char err[256] = "";
+
+	print_string(argv, err);
+	print_string(": 1: ", err);
+	print_string(command[0], err);
+	print_string(": can't cd to ", err);
+	print_string(command[1], err);
+	print_string("\n", err);
+	write(2, err, __strlen(err));
 }

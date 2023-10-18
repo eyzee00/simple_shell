@@ -27,14 +27,14 @@ void interactive_mode(char *argv)
 		readc = getline(&buff, (size_t *) &buffsz, stdin);
 		if (readc == -1)
 			break;
+		if (semicolon_check(buff))
+			multicmd_hand(buff, argv, &path, &head);
+		else
+		{
 		f = bltn_chck(buff);
 		if (f != NULL)
 			if (f(buff, &head, &path) == 1)
 				continue;
-		if (semicolon_check(buff))
-			multicmd_hand(buff, argv, &path);
-		else
-		{
 		var_set(buff, &wordc, &command);
 		check = file_exist_exec(command[0]);
 		if (exec_handl(check, command, argv, &path, wordc, 1))
@@ -56,6 +56,7 @@ void argument_mode(char **argv)
 	char *buffer = NULL, **commandlist = NULL, **command = NULL;
 	alloclist_t *head = NULL;
 	path_t *path = NULL;
+	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
 	path = path_creator(&path);
 	check = access(argv[1], F_OK);
@@ -80,9 +81,13 @@ void argument_mode(char **argv)
 			continue;
 		}
 		if (semicolon_check(commandlist[i]))
-			multicmd_hand(commandlist[i], argv[0], &path);
+			multicmd_hand(commandlist[i], argv[0], &path, &head);
 		else
 		{
+		f = bltn_chck(commandlist[i]);
+		if (f != NULL)
+			if (f(commandlist[i], &head, &path) == 1)
+				continue;
 		var_set(commandlist[i], &wordc, &command);
 		check = file_exist_exec(command[0]);
 		if (exec_handl(check, command, argv[0], &path, wordc, i))
@@ -123,16 +128,14 @@ void noninteractive_mode(FILE *file, char **argv)
 		if (readc == -1)
 			break;
 		counter++;
-		f = bltn_chck(line);
-		if (f != NULL)
-		{
-			if (f(line, &head, &path))
-				continue;
-		}
 		if (semicolon_check(line))
-			multicmd_hand(line, argv[0], &path);
+			multicmd_hand(line, argv[0], &path, &head);
 		else
 		{
+		f = bltn_chck(line);
+		if (f != NULL)
+			if (f(line, &head, &path) == 1)
+				continue;
 		var_set(line, &wordc, &command);
 		check = file_exist_exec(command[0]);
 		if (exec_handl(check, command, argv[0], &path, wordc, counter))

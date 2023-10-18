@@ -99,7 +99,7 @@ int exec_handl(int check, char **cmd, char *argv, path_t **p, int wdc, int c);
 int semicolon_check(char *str);
 char **cmdtok(char *ch);
 void fill_row_cmd(char **wordlist, int row, char *word);
-void multicmd_hand(char *buffer, char *argv, path_t **path);
+void multicmd_hand(char *buffer, char *argv, path_t **p, alloclist_t **head);
 char *_strtok(char *str, char *delimiter);
 
 /*mode handler functions*/
@@ -115,6 +115,7 @@ int emptycmd_handler(char *buffer, alloclist_t **head, path_t **path);
 int setenv_handler(char *buffer, alloclist_t **head, path_t **path);
 int unsetenv_handler(char *buffer, alloclist_t **head, path_t **path);
 int cd_handler(char *buffer, alloclist_t **head, path_t **path);
+void cd_err(char **command, char *argv);
 
 /*PATH handler functions*/
 char *_getenv(const char *name);

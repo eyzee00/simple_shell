@@ -93,21 +93,27 @@ void fill_row_cmd(char **wordlist, int row, char *word)
  * multicmd_hand - handles multiple commands
  * @buffer: user input
  * @argv: name of the shell
- * @path: pathlist
+ * @p: pathlist
+ * @head: head of the alloclist
  * Return: (void)
  */
-void multicmd_hand(char *buffer, char *argv, path_t **path)
+void multicmd_hand(char *buffer, char *argv, path_t **p, alloclist_t **head)
 {
 	int cmdc, check, i, wordc;
 	char **commandlist, **command;
+	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
 	cmdc = cmd_counter(buffer);
 	commandlist = cmdtok(buffer);
 	for (i = 0; i < cmdc; i++)
 	{
+		f = bltn_chck(commandlist[i]);
+		if (f != NULL)
+			if (f(commandlist[i], head, p) == 1)
+				continue;
 		var_set(commandlist[i], &wordc, &command);
 		check = file_exist_exec(command[0]);
-		if (exec_handl(check, command, argv, path, wordc, i))
+		if (exec_handl(check, command, argv, p, wordc, i))
 			continue;
 		free_memory(command, wordc);
 	}
