@@ -27,7 +27,8 @@ int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
 	return (NULL);
 }
 /**
- * exit_handler - handles exit with arguments or without
+ * exit_handler - handles exit
+ * with argument and without argument
  * @head: head of the alloclist
  * @buffer: the user input
  * @path: the head of the pathlist
