@@ -1,6 +1,7 @@
 #include "main.h"
 /**
  * cmd_counter - count the number of commands
+ * count user command entry
  * @str: the string to operate with
  * Return: the line count if successful
  */
