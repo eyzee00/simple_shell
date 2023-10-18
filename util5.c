@@ -51,6 +51,7 @@ char **commandtok(char *ch, char *del)
 }
 /**
  * arg_err - handles errors in argument mode using options
+ * check for possible errors at different options
  * @argv: the argument vector
  * @option: the error code
  * @command: the command if needed
