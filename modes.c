@@ -206,6 +206,7 @@ char *filetobuff(char **argv, alloclist_t **head)
  */
 void sigint_handler(int sig)
 {
+	sig = 0;
 	free_pathlist(&ptr1);
 	free_everything(&ptr2);
 	free(buff);
