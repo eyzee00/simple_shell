@@ -104,7 +104,6 @@ void argument_mode(char **argv)
  * noninteractive_mode - handles the output written into the stdin of the shell
  * by another program i.e(pipes and redirections)
  * @file: the standard input stream, or another file
- * @status: the status of the child process
  * @argv: the name of the shell program
  */
 void noninteractive_mode(FILE *file, char **argv)
