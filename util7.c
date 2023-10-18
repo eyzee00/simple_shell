@@ -1,6 +1,7 @@
 #include "main.h"
 /**
  * str_cmp_df - compares two strings
+ * compare at char level
  * @s1: the first string
  * @s2: the second string
  * Return: (1) if identical, (0) otherwise
