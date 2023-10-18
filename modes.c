@@ -209,5 +209,6 @@ void sigint_handler(int signum)
 	free(buff);
 	write(1, "\n", 2);
 	signum = 143;
+	write(2, "Terminated\n", __strlen("Terminated\n"));
 	exit(signum);
 }
