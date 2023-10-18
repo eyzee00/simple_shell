@@ -1,6 +1,7 @@
 #include "main.h"
 /**
  * exit_arg_err - handles the exit argument error
+ * exit error is handled
  * @argv: the name of the shell
  * @command: the exit command
  * @option: the error code
@@ -81,6 +82,7 @@ int exec_handl(int check, char **cmd, char *argv, path_t **p, int wdc, int c)
 }
 /**
  * semicolon_check - checks for the semicolon character
+ * check for semicolon in user entry
  * @str: the string to be checked
  * Return: (1) if found, (0) if not
  */
