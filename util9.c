@@ -107,7 +107,7 @@ void multicmd_hand(char *buffer, char *argv, path_t **path)
 	{
 		var_set(commandlist[i], &wordc, &command);
 		check = file_exist_exec(command[0]);
-		if (exec_handl(check, command, argv, path, wordc))
+		if (exec_handl(check, command, argv, path, wordc, i))
 			continue;
 		free_memory(command, wordc);
 	}

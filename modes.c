@@ -39,7 +39,7 @@ void interactive_mode(char *argv)
 		{
 		var_set(buffer, &wordc, &command);
 		check = file_exist_exec(command[0]);
-		if (exec_handl(check, command, argv, &path, wordc))
+		if (exec_handl(check, command, argv, &path, wordc, 1))
 			continue;
 		free_memory(command, wordc);
 		}
@@ -54,7 +54,7 @@ void interactive_mode(char *argv)
   */
 void argument_mode(char **argv)
 {
-	int check, check2, exec, sub_id, status, linec, i = 0, wordc;
+	int check, linec, i = 0, wordc;
 	char *buffer = NULL, **commandlist = NULL, **command = NULL;
 	alloclist_t *head = NULL;
 	path_t *path = NULL;
@@ -80,33 +80,19 @@ void argument_mode(char **argv)
 			i++;
 			continue;
 		}
-		wordc = word_count(commandlist[i]);
-		command = tokenizer(commandlist[i]);
-		check = file_exist_exec(command[0]);
-		if (check == 1 || check == -1)
+		if (semicolon_check(commandlist[i]))
+			multicmd_hand(commandlist[i], argv[0], &path);
+		else
 		{
-			if (check == -1)
-			{
-				check2 = executable_locator(&path, command);
-				if (check2 == -1 || check2 == 0)
-				{
-					error_handler(argv[0], command[0], 1, check);
-					free_memory(command, wordc);
-					i++;
-					continue;
-				}
-			}
-			sub_id = fork();
-			if (sub_id == 0)
-			{
-				exec = execve(command[0], command, environ);
-				if (exec == -1)
-					exit(99);
-			}
-			else
-				wait(&status);
+		var_set(commandlist[i], &wordc, &command);
+		check = file_exist_exec(command[0]);
+		if (exec_handl(check, command, argv[0], &path, wordc, i))
+		{
+			i++;
+			continue;
 		}
 		free_memory(command, wordc);
+		}
 		i++;
 	}
 	free_pathlist(&path);
@@ -145,28 +131,16 @@ void noninteractive_mode(FILE *file, int *status, char **argv)
 			if (f(line, &head, &path))
 				continue;
 		}
-		wordc = word_count(line);
-		command = tokenizer(line);
-		check = file_exist_exec(command[0]);
-		if (check == 1 || check == -1)
+		if (semicolon_check(line))
+			multicmd_hand(line, argv[0], &path);
+		else
 		{
-			if (check == -1)
-			{
-				check2 = executable_locator(&path, command);
-				if (check2 == -1 || check2 == 0)
-				{
-					arg_err(argv, -5, command, counter);
-					free_memory(command, wordc);
-					continue;
-				}
-			}
-			child_id = fork();
-			if (child_id == 0)
-				execve(command[0], command, environ);
-			else
-				wait(status);
-		}
+		var_set(line, &wordc, &command);
+		check = file_exist_exec(command[0]);
+		if (exec_handl(check, command, argv[0], &path, wordc, counter))
+			continue;
 		free_memory(command, wordc);
+		}
 	}
 	free_pathlist(&path);
 	if (head != NULL)

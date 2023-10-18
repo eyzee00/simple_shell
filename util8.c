@@ -34,19 +34,20 @@ void var_set(char *buffer, int *check, char ***command)
  * @check: the file status
  * @cmd: the command entered by the user
  * @argv: name of the shell
- * @wordc: how many words in the command
+ * @wdc: how many words in the command
  * @p: pathlist
+ * @c: line count
  * Return: (1) to continue, (0) to resume
  */
-int exec_handl(int check, char **cmd, char *argv, path_t **p, int wordc)
+int exec_handl(int check, char **cmd, char *argv, path_t **p, int wdc, int c)
 {
 	int check2 = 0;
 
 
 	if (check == 0)
 	{
-		error_handler(argv, cmd[0], 1, -1);
-		free_memory(cmd, wordc);
+		error_handler(argv, cmd[0], c, -1);
+		free_memory(cmd, wdc);
 		return (1);
 	}
 	if (check == 1 || check == -1)
@@ -56,8 +57,8 @@ int exec_handl(int check, char **cmd, char *argv, path_t **p, int wordc)
 			check2 = executable_locator(p, cmd);
 			if (check2 == -1 || check2 == 0)
 			{
-				error_handler(argv, cmd[0], 1, check);
-				free_memory(cmd, wordc);
+				error_handler(argv, cmd[0], c, check);
+				free_memory(cmd, wdc);
 				return (1);
 			}
 		}
@@ -84,6 +85,11 @@ int semicolon_check(char *str)
 			{
 			if (str[i] == 10)
 				return (1);
+			if (str[i] == ';' && str[i + 1] == 0)
+			{
+				str[i] = 0;
+				return (1);
+			}
 			if (str[i] == ';' && str[i + 1] == '\n')
 			{
 				str[i] = 10;
@@ -92,6 +98,7 @@ int semicolon_check(char *str)
 			}
 			i++;
 			}
+			return (1);
 		}
 		i++;
 	}
