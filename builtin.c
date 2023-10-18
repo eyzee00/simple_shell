@@ -7,6 +7,7 @@
 int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
 {
 	builtin_t builtin_list[] = {
+		{"cd", cd_handler},
 		{"unsetenv", unsetenv_handler},
 		{"setenv", setenv_handler},
 		{"exit", exit_handler},
@@ -17,7 +18,7 @@ int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path)
 
 	if (space_check(buff))
 		return (emptycmd_handler);
-	while (i < 4)
+	while (i < 5)
 	{
 		if (str_cmp(buff, builtin_list[i].cmdname))
 			return (builtin_list[i].func);

@@ -114,6 +114,8 @@ int env_handler(char *buffer, alloclist_t **head, path_t **path);
 int emptycmd_handler(char *buffer, alloclist_t **head, path_t **path);
 int setenv_handler(char *buffer, alloclist_t **head, path_t **path);
 int unsetenv_handler(char *buffer, alloclist_t **head, path_t **path);
+int cd_handler(char *buffer, alloclist_t **head, path_t **path);
+
 /*PATH handler functions*/
 char *_getenv(const char *name);
 path_t *add_node_end_path(path_t **head, char *dirname);
