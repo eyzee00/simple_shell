@@ -76,6 +76,7 @@ int word_count(char *str)
 }
 /**
  * _strlentok - calculates the length of the variable name
+ * get length 
  * @str: the string to mesure
  * Return: the length of the string
  */
