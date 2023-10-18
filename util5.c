@@ -143,6 +143,7 @@ void *_calloc(unsigned int nmemb, unsigned int size)
 }
 /**
  * _getenv - gets the value of an environment variable
+ * values of env inputed
  * @name: the variable name
  * Return: (NULL) if not found, the value otherwise
  */
