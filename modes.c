@@ -241,5 +241,6 @@ void sigint_handler(int sig)
 	free_pathlist(&ptr1);
 	free_everything(&ptr2);
 	free(buff);
+	write(1, "\n", 2);
 	exit(sig);
 }
