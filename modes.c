@@ -1,5 +1,4 @@
 #include "main.h"
-#include <unistd.h>
 
 static path_t *ptr1;
 static alloclist_t *ptr2;
@@ -12,7 +11,7 @@ static char *buff;
 
 void interactive_mode(char *argv)
 {
-	char **command = NULL, *buffer = NULL;
+	char **command = NULL;
 	alloclist_t *head = NULL;
 	path_t *path = NULL;
 	int readc = 0, wordc = 0, check, buffsz = LEN;
@@ -25,19 +24,18 @@ void interactive_mode(char *argv)
 	{
 		ptr2 = head;
 		write(1, "($): ", 6);
-		readc = getline(&buffer, (size_t *) &buffsz, stdin);
-		buff = buffer;
+		readc = getline(&buff, (size_t *) &buffsz, stdin);
 		if (readc == -1)
 			break;
-		f = bltn_chck(buffer);
+		f = bltn_chck(buff);
 		if (f != NULL)
-			if (f(buffer, &head, &path) == 1)
+			if (f(buff, &head, &path) == 1)
 				continue;
-		if (semicolon_check(buffer))
-			multicmd_hand(buffer, argv, &path);
+		if (semicolon_check(buff))
+			multicmd_hand(buff, argv, &path);
 		else
 		{
-		var_set(buffer, &wordc, &command);
+		var_set(buff, &wordc, &command);
 		check = file_exist_exec(command[0]);
 		if (exec_handl(check, command, argv, &path, wordc, 1))
 			continue;
@@ -45,7 +43,7 @@ void interactive_mode(char *argv)
 		}
 	}
 	write(1, "\n", 2);
-	ultimate_free(&path, &head, buffer);
+	ultimate_free(&path, &head, buff);
 }
 /**
   * argument_mode - helper function
@@ -201,15 +199,15 @@ char *filetobuff(char **argv, alloclist_t **head)
 }
 /**
  * sigint_handler - handles the sigint signal
- * @sig: the signal
+ * @signum: the signal
  * Return: (void)
  */
-void sigint_handler(int sig)
+void sigint_handler(int signum)
 {
-	sig = 0;
 	free_pathlist(&ptr1);
 	free_everything(&ptr2);
 	free(buff);
 	write(1, "\n", 2);
-	exit(sig);
+	signum = 143;
+	exit(signum);
 }
