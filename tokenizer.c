@@ -1,6 +1,7 @@
 #include "main.h"
 /**
- * tokenizer - tokenize our argument
+ * tokenizer - it remove spaces from our argument
+ * it brings user commands in an array
  * @ch: strings
  * Return: pointer to wordlist
  */
