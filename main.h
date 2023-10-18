@@ -100,6 +100,7 @@ int semicolon_check(char *str);
 char **cmdtok(char *ch);
 void fill_row_cmd(char **wordlist, int row, char *word);
 void multicmd_hand(char *buffer, char *argv, path_t **path);
+char *_strtok(char *str, char *delimiter);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);

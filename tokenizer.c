@@ -16,7 +16,7 @@ char **tokenizer(char *ch)
 	wordlist = malloc(sizeof(char *) * (wordc + 1));
 	if (wordlist == NULL)
 		return (NULL);
-	word = strtok(ch, del);
+	word = _strtok(ch, del);
 	char_count = _strlen(word);
 	*wordlist = malloc(sizeof(char) * char_count + 1);
 	if (*wordlist == NULL)
@@ -27,7 +27,7 @@ char **tokenizer(char *ch)
 	fill_row(wordlist, 0, word);
 	while (i < wordc)
 	{
-		word = strtok(NULL, del);
+		word = _strtok(NULL, del);
 		char_count = strlen(word);
 		*(wordlist + i) = malloc(sizeof(char) * char_count + 1);
 		if (*(wordlist + i) == NULL)

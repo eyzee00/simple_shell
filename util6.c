@@ -92,11 +92,11 @@ path_t *path_creator(path_t **head)
 	if (buffer == NULL)
 		return (NULL);
 	_strncpy(buffer, holder, __strlen(holder));
-	holder = strtok(buffer, ":");
+	holder = _strtok(buffer, ":");
 	add_node_end_path(head, holder);
 	while (holder != NULL)
 	{
-		holder = strtok(NULL, ":");
+		holder = _strtok(NULL, ":");
 		if (holder == NULL)
 			continue;
 		add_node_end_path(head, holder);

@@ -17,7 +17,7 @@ char **commandtok(char *ch, char *del)
 	commandlist = malloc(sizeof(char *) * (linec + 1));
 	if (commandlist == NULL)
 		return (NULL);
-	command = strtok(ch, del);
+	command = _strtok(ch, del);
 	if (command != NULL)
 	{
 	char_count = __strlen(command);
@@ -31,7 +31,7 @@ char **commandtok(char *ch, char *del)
 	}
 	while (i < linec)
 	{
-		command = strtok(NULL, del);
+		command = _strtok(NULL, del);
 		if (command != NULL)
 		{
 		char_count = __strlen(command);

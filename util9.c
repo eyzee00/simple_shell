@@ -33,7 +33,7 @@ char **cmdtok(char *ch)
 	commandlist = malloc(sizeof(char *) * (cmdc + 1));
 	if (commandlist == NULL)
 		return (NULL);
-	command = strtok(ch, ";");
+	command = _strtok(ch, ";");
 	if (command != NULL)
 	{
 	char_count = __strlen(command);
@@ -47,7 +47,7 @@ char **cmdtok(char *ch)
 	}
 	while (i < cmdc)
 	{
-		command = strtok(NULL, ";");
+		command = _strtok(NULL, ";");
 		if (command != NULL)
 		{
 		char_count = __strlen(command);
@@ -112,4 +112,37 @@ void multicmd_hand(char *buffer, char *argv, path_t **path)
 		free_memory(command, wordc);
 	}
 	free_memory(commandlist, cmdc);
+}
+/**
+ * _strtok - custom strtok to make Julian satisfied
+ * @str: the buffer to tokenize
+ * @delimiter: a pointer to the delimiter
+ * Return: the next token
+ */
+char *_strtok(char *str, char *delimiter)
+{
+	static char *buffiter = NULL;
+	char *buffstart;
+	int i = 0;
+
+	if (str != NULL)
+		buffiter = str;
+	if (buffiter == NULL || *buffiter == '\0')
+		return NULL;
+	while (*(buffiter + i) != 0 && *(buffiter + i) == *delimiter)
+        	i++;
+	buffiter = buffiter + i;
+	i = 0;
+	buffstart = buffiter;
+	while (*(buffiter + i) != 0 && *(buffiter + i) != *delimiter)
+		i++;
+	buffiter = buffiter + i;
+	i = 0;
+	if (*buffiter == *delimiter)
+	{
+		*buffiter = '\0';
+		i++;
+		buffiter = buffiter + i;
+	}
+	return (buffstart);
 }

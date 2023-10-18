@@ -6,22 +6,55 @@
 char *_getenv(const char *name);
 extern char **environ;
 int str_cmp(char *s1, char *s2);
-
+char *_strtok(char *str, char *delimiter);
 /********************************/
 int main(void)
 {
 	char buff[] = "ls -la ; ls -la ; ls -la\n";
 	char *ptr;
 	
-	ptr = strtok(buff, ";");
+	ptr = _strtok(buff, ";");
 	printf("%s| %d\n", ptr, (unsigned int) strlen(ptr));
-	ptr = strtok(NULL, ";");
+	ptr = _strtok(NULL, ";");
 	printf("%s| %d\n", ptr, (unsigned int) strlen(ptr));
-	ptr = strtok(NULL, ";");
+	ptr = _strtok(NULL, ";");
 	printf("%s| %d", ptr, (unsigned int) strlen(ptr));
 	return (0);
 }
 /*********************************/
+/**
+ * _strtok - custom strtok to make Julian satisfied
+ * @str: the buffer to tokenize
+ * @delimiter: a pointer to the delimiter
+ * Return: the next token
+ */
+char *_strtok(char *str, char *delimiter)
+{
+	static char *buffiter = NULL;
+	char *buffstart;
+	int i = 0;
+
+	if (str != NULL)
+		buffiter = str;
+	if (buffiter == NULL || *buffiter == '\0')
+		return NULL;
+	while (*(buffiter + i) != 0 && *(buffiter + i) == *delimiter)
+        	i++;
+	buffiter = buffiter + i;
+	i = 0;
+	buffstart = buffiter;
+	while (*(buffiter + i) != 0 && *(buffiter + i) != *delimiter)
+		i++;
+	buffiter = buffiter + i;
+	i = 0;
+	if (*buffiter == *delimiter)
+	{
+		*buffiter = '\0';
+		i++;
+		buffiter = buffiter + i;
+	}
+	return (buffstart);
+}
 char *_getenv(const char *name)
 {
 	int i = 0, j = 0;
