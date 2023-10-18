@@ -107,15 +107,14 @@ void argument_mode(char **argv)
  * @status: the status of the child process
  * @argv: the name of the shell program
  */
-void noninteractive_mode(FILE *file, int *status, char **argv)
+void noninteractive_mode(FILE *file, char **argv)
 {
-	pid_t child_id;
 	char *line = 0;
 	char **command;
 	size_t buffsz = (size_t) LEN;
 	alloclist_t *head = NULL;
 	path_t *path = NULL;
-	int wordc, readc = 0, counter = 0, check, check2;
+	int wordc, readc = 0, counter = 0, check;
 	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
 	path = path_creator(&path);

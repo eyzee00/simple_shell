@@ -104,7 +104,7 @@ void multicmd_hand(char *buffer, char *argv, path_t **path);
 /*mode handler functions*/
 void interactive_mode(char *argv);
 void argument_mode(char **argv);
-void noninteractive_mode(FILE *file, int *status, char **argv);
+void noninteractive_mode(FILE *file, char **argv);
 
 /*built-in handler functions*/
 int (*bltn_chck(char *buff))(char *buffer, alloclist_t **head, path_t **path);

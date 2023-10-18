@@ -7,8 +7,6 @@
  */
 int main(int argc, char **argv)
 {
-	int status;
-
 	if (argc != 1)
 	{
 		argument_mode(argv);
@@ -16,7 +14,7 @@ int main(int argc, char **argv)
 	}
 	if (!isatty(0))
 	{
-		noninteractive_mode(stdin, &status, argv);
+		noninteractive_mode(stdin, argv);
 		return (0);
 	}
 	interactive_mode(argv[0]);
