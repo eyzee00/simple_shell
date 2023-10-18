@@ -1,6 +1,7 @@
 #include "main.h"
 /**
   * _strlen - count string length
+  * it check for EOF
   * @buffer: strings to count
   * Return: string length
   */
