@@ -101,6 +101,7 @@ char **cmdtok(char *ch);
 void fill_row_cmd(char **wordlist, int row, char *word);
 void multicmd_hand(char *buffer, char *argv, path_t **p, alloclist_t **head);
 char *_strtok(char *str, char *delimiter);
+void replacer(alloclist_t **head, char *buff3, char **command, int wordc);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);
@@ -115,7 +116,7 @@ int emptycmd_handler(char *buffer, alloclist_t **head, path_t **path);
 int setenv_handler(char *buffer, alloclist_t **head, path_t **path);
 int unsetenv_handler(char *buffer, alloclist_t **head, path_t **path);
 int cd_handler(char *buffer, alloclist_t **head, path_t **path);
-void cd_err(char **command, char *argv);
+void cd_err(char **command, char *argv, int wordc);
 
 /*PATH handler functions*/
 char *_getenv(const char *name);
