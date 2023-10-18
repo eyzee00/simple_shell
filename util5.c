@@ -100,6 +100,7 @@ void arg_err(char **argv, int option, char **command, int line)
 }
 /**
   * fill_row_def - fill worldlist pointer with words
+  * put words into wordlist pointer
   * @wordlist: pointer
   * @row: wordlist pointer row
   * @word: content to fill
