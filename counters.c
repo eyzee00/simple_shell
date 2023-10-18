@@ -33,6 +33,7 @@ int __strlen(char *buffer)
 }
 /**
  * line_counter - countes the number of lines
+ * check if character is 10
  * @str: the string to operate on
  * Return: the line count
  */
