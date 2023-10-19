@@ -47,7 +47,7 @@ int cd_handler(char *buffer, alloclist_t **head, path_t **path)
 		}
 		replacer(head, buff3, command, wordc);
 	}
-	return (1);
+	return (-1);
 }
 /**
  * cd_err - handles cd errors
