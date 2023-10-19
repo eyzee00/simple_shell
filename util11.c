@@ -34,29 +34,12 @@ void fill_row_logic(char **wordlist, int row, char *word)
  */
 void logic_hand(char *buffer, char *argv, path_t **p, alloclist_t **head)
 {
-	int cmdc = 0, check, i, wordc;
+	int cmdc = 0, check, check2, i, wordc;
 	char **commandlist, **command, del[22] = "";
 	int (*f)(char *buffer, alloclist_t **head, path_t **path);
 
 	initializer(buffer, &cmdc, &check, del);
 	commandlist = logictok(buffer, del);
-	if (check == 0)
-	{
-	for (i = 0; i < cmdc && commandlist[i] != NULL; i++)
-	{
-		f = bltn_chck(commandlist[i]);
-		if (f != NULL)
-			if (f(commandlist[i], head, p) == 1)
-				continue;
-		var_set(commandlist[i], &wordc, &command);
-		check = file_exist_exec(command[0]);
-		if (exec_handl(check, command, argv, p, wordc, i))
-			continue;
-		free_memory(command, wordc);
-	}
-	}
-	else
-	{
 	for (i = 0; i < cmdc && commandlist[i] != NULL; i++)
 	{
 		f = bltn_chck(commandlist[i]);
@@ -67,11 +50,23 @@ void logic_hand(char *buffer, char *argv, path_t **p, alloclist_t **head)
 			continue;
 		}
 		var_set(commandlist[i], &wordc, &command);
-		check = file_exist_exec(command[0]);
-		if (lexec_handl(check, command, argv, p, wordc, i) == 1)
+		check2 = file_exist_exec(command[0]);
+		if (check == 1)
+		{
+		if (lexec_handl(check2, command, argv, p, wordc, i) == 1)
 			break;
+		}
+		else
+		{
+		if (lexec_handl(check2, command, argv, p, wordc, i) == 1)
+			continue;
+		else
+		{
+			free_memory(command, wordc);
+			break;
+		}
+		}
 		free_memory(command, wordc);
-	}
 	}
 	free_memory(commandlist, cmdc);
 }
