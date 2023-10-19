@@ -97,7 +97,7 @@ int setenv_handler(char *buffer, alloclist_t **head, path_t **path)
 		print_string(": Usage: setenv VARNAME VALUE\n", err);
 		write(2, err, __strlen(err));
 		free_memory(command, wordc);
-		return (1);
+		return (-1);
 	}
 	option = _setenv(command[1], command[2], head);
 	if (option == 0)
@@ -106,7 +106,7 @@ int setenv_handler(char *buffer, alloclist_t **head, path_t **path)
 		print_string(": Memory allocation failed\n", err);
 		write(2, err, __strlen(err));
 		free_memory(command, wordc);
-		return (1);
+		return (-1);
 	}
 	if (option == -1)
 	{
@@ -114,7 +114,7 @@ int setenv_handler(char *buffer, alloclist_t **head, path_t **path)
 		print_string(": bad variable name\n", err);
 		write(2, err, __strlen(err));
 		free_memory(command, wordc);
-		return (1);
+		return (-1);
 	}
 	free_memory(command, wordc);
 	return (-1);
