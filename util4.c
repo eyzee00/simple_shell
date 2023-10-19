@@ -122,7 +122,7 @@ int unsetenv_handler(char *buffer, alloclist_t **head, path_t **path)
 		print_string(": Usage: unsetenv VARNAME\n", err);
 		write(2, err, __strlen(err));
 		free_memory(command, wordc);
-		return (1);
+		return (-1);
 	}
 	option = _unsetenv(command[1], head);
 	if (option == -1)
@@ -131,7 +131,7 @@ int unsetenv_handler(char *buffer, alloclist_t **head, path_t **path)
 		print_string(": bad variable name\n", err);
 		write(2, err, __strlen(err));
 		free_memory(command, wordc);
-		return (1);
+		return (-1);
 	}
 	if (option == 0)
 	{
@@ -139,8 +139,8 @@ int unsetenv_handler(char *buffer, alloclist_t **head, path_t **path)
 		print_string(": Memory allocation failed\n", err);
 		write(2, err, __strlen(err));
 		free_memory(command, wordc);
-		return (1);
+		return (-1);
 	}
 	free_memory(command, wordc);
-	return (1);
+	return (-1);
 }

@@ -117,5 +117,5 @@ int setenv_handler(char *buffer, alloclist_t **head, path_t **path)
 		return (1);
 	}
 	free_memory(command, wordc);
-	return (1);
+	return (-1);
 }

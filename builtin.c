@@ -65,7 +65,7 @@ int exit_handler(char *buffer, alloclist_t **head, path_t **path)
 		exit(status);
 		}
 	}
-	return (1);
+	return (-1);
 }
 /**
  * _atoi - converts a string to integer
@@ -127,7 +127,7 @@ int env_handler(char *buffer, alloclist_t **head, path_t **path)
 		write(1, "\n", 1);
 		i++;
 	}
-	return (1);
+	return (-1);
 }
 /**
  * emptycmd_handler - handles the newline character
@@ -141,5 +141,5 @@ int emptycmd_handler(char *buffer, alloclist_t **head, path_t **path)
 	head = (alloclist_t **) head;
 	buffer = (char *) buffer;
 	path = (path_t **) path;
-	return (1);
+	return (-1);
 }
