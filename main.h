@@ -17,7 +17,7 @@
 extern char **environ;
 /**
  * struct alloclist_s - a linked list containing memory addresses
- * to free 
+ * to free
  * it save time
  * @address: address to free
  * @next: pointer to the next element inn the list
