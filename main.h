@@ -104,6 +104,16 @@ void fill_row_cmd(char **wordlist, int row, char *word);
 void multicmd_hand(char *buffer, char *argv, path_t **p, alloclist_t **head);
 char *_strtok(char *str, char *delimiter);
 void replacer(alloclist_t **head, char *buff3, char **command, int wordc);
+char **logictok(char *ch, char *del);
+int logic_check(char *str);
+void fill_row_logic(char **wordlist, int row, char *word);
+int get_del(char *buffer);
+int logic_counter(char *str);
+void logic_hand(char *buffer, char *argv, path_t **p, alloclist_t **head);
+int logicexecutor(char **command);
+int lexec_handl(int check, char **cmd, char *argv, path_t **p, int wdc, int c);
+void set_delimiter(int check, char *del);
+void initializer(char *buffer, int *cmdc, int *check, char *del);
 
 /*mode handler functions*/
 void interactive_mode(char *argv);

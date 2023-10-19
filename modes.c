@@ -29,11 +29,13 @@ void interactive_mode(char *argv)
 			break;
 		if (semicolon_check(buff))
 			multicmd_hand(buff, argv, &path, &head);
+		else if (logic_check(buff))
+			logic_hand(buff, argv, &path, &head);
 		else
 		{
 		f = bltn_chck(buff);
 		if (f != NULL)
-			if (f(buff, &head, &path) == 1)
+			if (f(buff, &head, &path) == -1)
 				continue;
 		var_set(buff, &wordc, &command);
 		check = file_exist_exec(command[0]);
@@ -87,7 +89,7 @@ void argument_mode(char **argv)
 		{
 		f = bltn_chck(commandlist[i]);
 		if (f != NULL)
-			if (f(commandlist[i], &head, &path) == 1)
+			if (f(commandlist[i], &head, &path) == -1)
 				continue;
 		var_set(commandlist[i], &wordc, &command);
 		check = file_exist_exec(command[0]);
@@ -131,11 +133,13 @@ void noninteractive_mode(FILE *file, char **argv)
 		counter++;
 		if (semicolon_check(line))
 			multicmd_hand(line, argv[0], &path, &head);
+		else if (logic_check(line))
+			logic_hand(line, argv[0], &path, &head);
 		else
 		{
 		f = bltn_chck(line);
 		if (f != NULL)
-			if (f(line, &head, &path) == 1)
+			if (f(line, &head, &path) == -1)
 				continue;
 		var_set(line, &wordc, &command);
 		check = file_exist_exec(command[0]);

@@ -77,7 +77,6 @@ int exec_handl(int check, char **cmd, char *argv, path_t **p, int wdc, int c)
 		}
 		executor(cmd);
 	}
-
 	return (0);
 }
 /**
